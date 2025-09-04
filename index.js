@@ -1,0 +1,72 @@
+const express = require('express')
+const app = express()
+require('dotenv').config()
+const port = process.env.PORT || 5000
+const fileUpload = require('express-fileupload');
+const { db } = require('./db/db');
+const cors = require('cors');
+const userRouter = require('./router/user');
+const patientRouter = require('./router/patient');
+const docRouter = require('./router/doctor');
+const planRouter = require('./router/plan');
+const specialRouter = require('./router/specialization');
+const departRouter = require('./router/department');
+const bookingRouter = require('./router/booking');
+const cartRouter = require('./router/cart');
+const notifyRouter = require('./router/notification');
+const recepRouter = require('./router/receptionist');
+const labRouter = require('./router/lab');
+const categoryRouter = require('./router/category');
+const subCatRouter = require('./router/subCategory');
+const brandRouter = require('./router/brand');
+const medicineRouter = require('./router/medicine');
+const medicineCartRouter = require('./router/medicineCart');
+const bannerRouter = require('./router/banner');
+const offerRouter = require('./router/offer');
+const sellRouter = require('./router/sell');
+const dashboardRouter = require('./router/dashboard');
+const clinicRouter = require('./router/clinic');
+const callRouter = require('./router/call');
+const enqueryRouter = require('./router/enquery');
+const contactRouter = require('./router/contact');
+const packageRouter = require('./router/package');
+const paymentRouter = require('./router/payment');
+
+
+db()
+app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/', }));
+app.use(express.json());
+app.use(cors());
+
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.use('/api/v1/users', userRouter)
+app.use('/api/v1/patients', patientRouter)
+app.use('/api/v1/doctors', docRouter)
+app.use('/api/v1/plans', planRouter)
+app.use('/api/v1/specializations', specialRouter)
+app.use('/api/v1/departments', departRouter)
+app.use('/api/v1/bookings', bookingRouter)
+app.use('/api/v1/carts', cartRouter)
+app.use('/api/v1/notifications', notifyRouter)
+app.use('/api/v1/receptionist', recepRouter)
+app.use('/api/v1/labs', labRouter)
+app.use('/api/v1/categories', categoryRouter)
+app.use('/api/v1/subCategories', subCatRouter)
+app.use('/api/v1/brands', brandRouter)
+app.use('/api/v1/medicines', medicineRouter)
+app.use('/api/v1/medicineCarts', medicineCartRouter)
+app.use('/api/v1/banners', bannerRouter)
+app.use('/api/v1/offers', offerRouter)
+app.use('/api/v1/selles', sellRouter)
+app.use('/api/v1/dashboard', dashboardRouter)
+app.use('/api/v1/clinics', clinicRouter)
+app.use('/api/v1/calls', callRouter)
+app.use('/api/v1/enquires', enqueryRouter)
+app.use('/api/v1/contacts', contactRouter)
+app.use('/api/v1/packages', packageRouter)
+app.use('/api/v1/payment', paymentRouter)
+
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))

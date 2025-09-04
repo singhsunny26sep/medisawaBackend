@@ -1,0 +1,138 @@
+<mxfile host="65bd71144e">
+    <diagram id="O6UI_PX3X3Tau1gDbbm3" name="Page-1">
+        <mxGraphModel dx="592" dy="846" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="80" width="240" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="80" width="240" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="80" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="80" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="80" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="pricetion image" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="90" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="" style="edgeStyle=none;html=1;" parent="1" source="8" target="39" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="pricecatpion text" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="85" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="lab test" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="85" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="edgeStyle=none;html=1;" parent="1" source="10" target="11" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="lab" style="text;strokeColor=default;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="530" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="edgeStyle=none;html=1;" parent="1" source="11" target="13" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="add profile" style="whiteSpace=wrap;html=1;fontSize=24;fillColor=none;gradientColor=none;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="600" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="" style="edgeStyle=none;html=1;" parent="1" source="13" target="31" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="" style="edgeStyle=none;html=1;" parent="1" source="13" target="37" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="60" y="1020" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="lists tests with price" style="whiteSpace=wrap;html=1;fontSize=24;fillColor=none;gradientColor=none;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="690" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="edgeStyle=none;html=1;" parent="1" source="17" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="doctor test lab" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="520" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="edgeStyle=none;html=1;" parent="1" source="18" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="list of test for current appoinment" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="660" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="edgeStyle=none;html=1;" parent="1" source="20" target="22" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="receptions check the lab test and price and assign to a laboratory after payment done" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="800" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="lab will be upload report after test result" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="940" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="edgeStyle=none;html=1;" parent="1" source="31" target="33" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ecg&lt;/span&gt;&lt;div&gt;1500&lt;/div&gt;" style="whiteSpace=wrap;html=1;fontSize=24;fillColor=none;gradientColor=none;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="790" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="exry&lt;div&gt;400&lt;/div&gt;" style="whiteSpace=wrap;html=1;fontSize=24;fillColor=none;gradientColor=none;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="870" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="assign list of test&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry y="1010" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="550" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="75" width="170" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="90" width="110" height="22.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="86.25" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="166.25" width="40" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="" style="shape=cross;whiteSpace=wrap;html=1;size=0.13326300370065838;" parent="1" vertex="1">
+                    <mxGeometry x="562.5" y="88.13" width="25" height="26.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="" style="shape=cross;whiteSpace=wrap;html=1;size=0.13326300370065838;" parent="1" vertex="1">
+                    <mxGeometry x="447.5" y="168.13" width="25" height="26.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" style="edgeStyle=none;html=1;exitX=0;exitY=0;exitDx=10.83421245374177;exitDy=14.79078754625823;exitPerimeter=0;entryX=0;entryY=0;entryDx=14.16578754625823;entryDy=14.79078754625823;entryPerimeter=0;" parent="1" source="45" target="45" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" style="edgeStyle=none;html=1;exitX=0;exitY=0;exitDx=19.582893773129115;exitDy=14.79078754625823;exitPerimeter=0;entryX=0;entryY=0;entryDx=14.16578754625823;entryDy=20.520393773129115;entryPerimeter=0;" parent="1" source="45" target="45" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="140" width="170" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="520" width="280" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="user which has login" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="530" width="260" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="" style="edgeStyle=none;html=1;" parent="1" source="52" target="53" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="paitnent details which has login user" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="630" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="family member (patient)" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="700" width="260" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
