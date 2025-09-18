@@ -8,6 +8,10 @@ const membershipCardSchema = new mongoose.Schema(
       enum: ["basic", "family", "premium", "platinum"],
       required: true,
     },
+    planType: {
+      type: String,
+      enum: ["quarterly", "half-year", "annual"],
+    },
     price: { type: Number, required: true },
     validThru: { type: String },
     description: { type: String },
