@@ -1,9 +1,9 @@
 {
   "name": "medisewa",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index",
   "scripts": {
-    "start": "nodemon run index.js",
+    "dev": "nodemon run index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Abudl Karim Ansari",

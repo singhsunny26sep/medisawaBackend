@@ -1,51 +1,68 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
+      type: String,
     },
     email: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     mobile: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     password: {
-        type: String,
-        required: true,
-        minlength: 5,
+      type: String,
+      required: true,
+      minlength: 5,
     },
     role: {
-        type: String,
-        default: 'user',
-        enum: ['user', 'admin', 'doctor', 'manager', 'hospital', 'patient', 'receptionist', 'lab', 'labBoy']
+      type: String,
+      default: "user",
+      enum: [
+        "user",
+        "admin",
+        "doctor",
+        "manager",
+        "hospital",
+        "patient",
+        "nursing",
+        "medical",
+        "receptionist",
+        "lab",
+        "labBoy",
+      ],
     },
     address: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     image: {
-        type: String,
-        default: 'https://cdn-icons-png.flaticon.com/512/194/194915.png'
+      type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/194/194915.png",
     },
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
     },
-    patientId: [{
+    patientId: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient'
-    }],
+        ref: "Patient",
+      },
+    ],
     fcmToken: {
-        type: String,
+      type: String,
     },
     clinic: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Clinic'
-    }
-}, { timestamps: true })
-const User = mongoose.model('User', UserSchema);
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Clinic",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

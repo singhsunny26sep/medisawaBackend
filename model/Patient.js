@@ -1,62 +1,55 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const PatientSchema = new mongoose.Schema({
+const PatientSchema = new mongoose.Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
     },
     image: {
-        type: String,
-        required: true,
-        default: 'https://cdn-icons-png.flaticon.com/512/1430/1430453.png'
+      type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/1430/1430453.png",
     },
     contactNumber: {
-        type: Number,
-        required: true,
-        minlength: 10,
-        maxlength: 15
+      type: Number,
+      minlength: 10,
+      maxlength: 15,
     },
     emergencyNumber: {
-        type: Number,
-        required: true,
-        minlength: 10,
-        maxlength: 15
+      type: Number,
+      minlength: 10,
+      maxlength: 15,
     },
     address: {
-        type: String,
-        required: true
+      type: String,
     },
     dob: {
-        type: String,
+      type: String,
     },
     gender: {
-        type: String,
-        enum: ['Male', 'Female', 'Other'],
-        required: true
+      type: String,
+      enum: ["Male", "Female", "Other"],
     },
     disease: {
-        type: String,
-        // required: true
+      type: String,
     },
     department: {
-        type: String,
-        required: true
+      type: String,
     },
     bloodGroup: {
-        type: String,
-        enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-        // required: true
+      type: String,
+      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
     },
     allergies: [String],
     medicalHistory: [String],
     medications: [String],
     symptom: [{ type: String }],
-}, { timestamps: true })
-const Patient = mongoose.model('Patient', PatientSchema)
+  },
+  { timestamps: true, versionKey: false }
+);
 
-module.exports = Patient
+module.exports = mongoose.model("Patient", PatientSchema);
