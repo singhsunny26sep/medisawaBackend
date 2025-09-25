@@ -1,36 +1,40 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const PackageSchema = new mongoose.Schema({
+const PackageSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
+      type: String,
     },
     description: {
-        type: String,
+      type: String,
     },
     price: {
-        type: Number,
+      type: Number,
     },
     image: {
-        type: String
+      type: String,
     },
-    tests: [{
+    tests: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Test'
-    }],
+        ref: "Test",
+      },
+    ],
     discount: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     discountType: {
-        type: String,
-        enum: ['percentage', 'fixed'],
-        default: 'percentage'
+      type: String,
+      enum: ["percentage", "fixed"],
+      default: "percentage",
     },
     discountedPrice: {
-        type: Number,
-        default: 0
-    }
-}, { timestamps: true })
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const Package = mongoose.model('Package', PackageSchema)
-module.exports = Package
+module.exports = mongoose.model("Package", PackageSchema);

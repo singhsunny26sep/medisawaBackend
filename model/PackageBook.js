@@ -1,32 +1,35 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const PackageBookSchema = new mongoose.Schema({
+const PackageBookSchema = new mongoose.Schema(
+  {
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
     },
     title: {
-        type: String
+      type: String,
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     packageId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Package',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Package",
+      required: true,
     },
     amount: {
-        type: Number
+      type: Number,
     },
     paid: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     paidAmount: {
-        type: Number
-    }
-}, { timestamps: true })
-const PackageBook = mongoose.model('PackageBook', PackageBookSchema)
-module.exports = PackageBook
+      type: Number,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+
+module.exports = mongoose.model("PackageBook", PackageBookSchema);

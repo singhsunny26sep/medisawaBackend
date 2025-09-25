@@ -1,42 +1,45 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const VitalSchema = new mongoose.Schema({
+const VitalSchema = new mongoose.Schema(
+  {
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
+      required: true,
     },
     appointment: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Booking'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     height: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     weight: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     bmi: {
-        type: Number
+      type: Number,
     },
     bloodPressure: {
-        type: String
+      type: String,
     },
     temperature: {
-        type: Number
+      type: Number,
     },
     pulseRate: {
-        type: Number
+      type: Number,
     },
     respirationRate: {
-        type: Number
+      type: Number,
     },
-}, { timestamps: true })
-const Vital = mongoose.model('Vitel', VitalSchema)
-module.exports = Vital;
+  },
+  { timestamps: true, versionKey: false }
+);
+
+module.exports = mongoose.model("Vitel", VitalSchema);

@@ -1,31 +1,34 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const SizeSchema = new mongoose.Schema({
+const SizeSchema = new mongoose.Schema(
+  {
     medicine: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Medicine',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Medicine",
     },
     size: {
-        type: String
+      type: String,
     },
     unit: {
-        type: String
+      type: String,
     },
     price: {
-        type: Number
+      type: Number,
     },
     quntity: {
-        type: Number
+      type: Number,
     },
     discount: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     discountType: {
-        type: String,
-        enum: ['percentage', 'fixed'],
-        default: 'percentage'
-    }
-}, { timestamps: true })
-const Size = mongoose.model('Size', SizeSchema)
-module.exports = Size
+      type: String,
+      enum: ["percentage", "fixed"],
+      default: "percentage",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+
+module.exports = mongoose.model("Size", SizeSchema);

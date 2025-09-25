@@ -1,22 +1,24 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const EnquerSchema = new mongoose.Schema({
+const EnquerSchema = new mongoose.Schema(
+  {
     name: {
-        type: String
+      type: String,
     },
     email: {
-        type: String
+      type: String,
     },
     mobile: {
-        type: String
+      type: String,
     },
     location: {
-        type: String
+      type: String,
     },
     description: {
-        type: String
-    }
-}, { timestamps: true })
+      type: String,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const Enquery = mongoose.model('Enquery', EnquerSchema)
-module.exports = Enquery
+module.exports = mongoose.model("Enquery", EnquerSchema);

@@ -1,40 +1,36 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const OfferSchema = new mongoose.Schema({
+const OfferSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        // required: true
+      type: String,
     },
     description: {
-        type: String,
-        // required: true
+      type: String,
     },
     discount: {
-        type: Number,
-        // required: true
+      type: Number,
     },
     discountType: {
-        type: String,
-        enum: ['percentage', 'fixed'],
-        // required: true
-        default: "percentage"
+      type: String,
+      enum: ["percentage", "fixed"],
+      default: "percentage",
     },
     startDate: {
-        type: Date,
-        // required: true
+      type: Date,
     },
     endDate: {
-        type: Date,
-        // required: true
+      type: Date,
     },
     isActive: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
     image: {
-        type: String
-    }
-}, { timestamps: true })
+      type: String,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const Offer = mongoose.model('Offer', OfferSchema)
-module.exports = Offer
+module.exports = mongoose.model("Offer", OfferSchema);

@@ -1,55 +1,56 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const CallSchema = new mongoose.Schema({
+const CallSchema = new mongoose.Schema(
+  {
     caller: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     receiver: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     callType: {
-        type: String,
-        enum: ['video', 'audio'],
-        default: 'audio'
+      type: String,
+      enum: ["video", "audio"],
+      default: "audio",
     },
     callStatus: {
-        type: String,
-        enum: ['ongoing', 'accepted', 'rejected', 'ended'],
-        // enum: ['ongoing', 'rejected', 'ended'],
-        default: 'ongoing'
+      type: String,
+      enum: ["ongoing", "accepted", "rejected", "ended"],
+      default: "ongoing",
     },
     isInCall: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
     callDuration: {
-        type: Number,
-        default: 0 // in seconds
+      type: Number,
+      default: 0, // in seconds
     },
     callStartedAt: {
-        type: Date,
-        default: Date.now
+      type: Date,
+      default: Date.now,
     },
     callEndedAt: {
-        type: Date
+      type: Date,
     },
     callAcceptedAt: {
-        type: Date
+      type: Date,
     },
     callRejectedAt: {
-        type: Date
+      type: Date,
     },
     callRejectedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     callEndedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
-}, { timestamps: true })
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const Call = mongoose.model('Call', CallSchema)
-module.exports = Call
+module.exports = mongoose.model("Call", CallSchema);

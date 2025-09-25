@@ -1,63 +1,69 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const MedicineSchema = new mongoose.Schema({
+const MedicineSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
+      type: String,
     },
     description: {
-        type: String
+      type: String,
     },
-    size: [{
+    size: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Size',
-    }],
+        ref: "Size",
+      },
+    ],
     unit: {
-        type: String
+      type: String,
     },
     price: {
-        type: Number
+      type: Number,
     },
     discount: {
-        type: Number,
+      type: Number,
     },
     manufacturer: {
-        type: String
+      type: String,
     },
     quntity: {
-        type: Number
+      type: Number,
     },
     inStock: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
     },
     subCategory: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'SubCategory',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SubCategory",
     },
     brand: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brand'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
     },
-    images: [{
+    images: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Image'
-    }],
+        ref: "Image",
+      },
+    ],
     isOffer: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     offer: {
-        type: Number
+      type: Number,
     },
     offerType: {
-        type: String,
-        enum: ['percentage', 'fixed'],
-        default: 'percentage'
-    }
-}, { timestamps: true })
-const Medicine = mongoose.model('Medicine', MedicineSchema)
-module.exports = Medicine
+      type: String,
+      enum: ["percentage", "fixed"],
+      default: "percentage",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+module.exports = mongoose.model("Medicine", MedicineSchema);

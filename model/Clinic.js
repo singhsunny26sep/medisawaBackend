@@ -1,53 +1,55 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const ClinicSchema = new mongoose.Schema({
+const ClinicSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     name: {
-        type: String,
+      type: String,
     },
     description: {
-        type: String,
+      type: String,
     },
     image: {
-        type: String
+      type: String,
     },
     address: {
-        type: String
+      type: String,
     },
     city: {
-        type: String
+      type: String,
     },
     state: {
-        type: String
+      type: String,
     },
     zipCode: {
-        type: String
+      type: String,
     },
     coordinates: {
-        type: {
-            type: String,
-            enum: ['Point'], // Specify GeoJSON format
-            // required: true,
-        },
-        coordinates: {
-            type: [Number], // Array to store [longitude, latitude]
-            // required: true,
-        },
+      type: {
+        type: String,
+        enum: ["Point"],
+      },
+      coordinates: {
+        type: [Number],
+      },
     },
     openTime: {
-        type: String
+      type: String,
     },
     closeTime: {
-        type: String
+      type: String,
     },
     isOpen: {
-        type: Boolean,
-        default: true
-    }
-}, { timestamps: true })
-ClinicSchema.index({ coordinates: '2dsphere' });
-const Clinic = mongoose.model('Clinic', ClinicSchema)
-module.exports = Clinic
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+
+ClinicSchema.index({ coordinates: "2dsphere" });
+
+module.exports = mongoose.model("Clinic", ClinicSchema);

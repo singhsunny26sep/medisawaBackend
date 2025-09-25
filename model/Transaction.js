@@ -28,7 +28,7 @@ const TransactionSchema = new mongoose.Schema(
     payment: { type: String },
     orderId: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("Transaction", TransactionSchema);

@@ -1,83 +1,81 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const PrescriptionSchema = new mongoose.Schema({
+const PrescriptionSchema = new mongoose.Schema(
+  {
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
-        // required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
     },
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor',
-        // required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
     },
     appointmentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Appointment',
-        // required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointment",
     },
-    medicines: [{
+    medicines: [
+      {
         medicineName: {
-            type: String,
-            // required: true
+          type: String,
         },
         dosage: {
-            type: String,
-            // required: true
+          type: String,
         },
         frequency: {
-            type: String,
-            // required: true
+          type: String,
         },
         duration: {
-            type: String,
-            // required: true
+          type: String,
         },
         description: {
-            type: String,
-            // required: true
-        }
-    }],
+          type: String,
+        },
+      },
+    ],
     prescription: {
-        type: String
+      type: String,
     },
     clinicSummary: {
-        type: String
+      type: String,
     },
-    allergy: [{
-        type: String
-    }],
+    allergy: [
+      {
+        type: String,
+      },
+    ],
     invastigationAdvice: {
-        type: String
+      type: String,
     },
     details: {
-        type: String
+      type: String,
     },
     bp: {
-        type: String
+      type: String,
     },
     pr: {
-        type: String
+      type: String,
     },
     temp: {
-        type: String
+      type: String,
     },
     spo: {
-        type: String
+      type: String,
     },
     rr: {
-        type: String
+      type: String,
     },
     rbs: {
-        type: String
+      type: String,
     },
     digitalSignature: {
-        type: String
+      type: String,
     },
     clinicIssues: {
-        type: String
-    }
-}, { timestamps: true })
+      type: String,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const Prescription = mongoose.model('Prescription', PrescriptionSchema)
-module.exports = Prescription
+module.exports = mongoose.model("Prescription", PrescriptionSchema);

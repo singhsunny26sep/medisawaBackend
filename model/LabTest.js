@@ -1,81 +1,85 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const LabTestSchema = new mongoose.Schema({
+const LabTestSchema = new mongoose.Schema(
+  {
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
     },
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
     },
     appointmentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Booking',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
     },
     testName: {
-        type: String,
+      type: String,
     },
     testDescription: {
-        type: String,
+      type: String,
     },
     testResults: {
-        type: String,
+      type: String,
     },
     test: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Test'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Test",
     },
     labId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     price: {
-        type: Number,
-        required: true,
-        default: 0,
-        min: 0,
+      type: Number,
+      required: true,
+      default: 0,
+      min: 0,
     },
     paid: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     due: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     receptionistId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     advance: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     totalPaid: {
-        type: Number,
-        default: 0,
+      type: Number,
+      default: 0,
     },
     paidAmounts: [
-        {
-            amount: { type: Number, required: true, default: 0 },
-            date: { type: Date, default: Date.now },
-        }
+      {
+        amount: { type: Number, required: true, default: 0 },
+        date: { type: Date, default: Date.now },
+      },
     ],
-    reports: [{
+    reports: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Report'
-    }],
+        ref: "Report",
+      },
+    ],
     type: {
-        type: String,
-        enum: ['package', 'test'],
-        default: 'test'
+      type: String,
+      enum: ["package", "test"],
+      default: "test",
     },
     packageId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Package'
-    }
-}, { timestamps: true })
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Package",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-const LabTest = mongoose.model('LabTest', LabTestSchema)
-module.exports = LabTest
+module.exports = mongoose.model("LabTest", LabTestSchema);

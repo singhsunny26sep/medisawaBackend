@@ -1,58 +1,58 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const BookingSchema = new mongoose.Schema({
+const BookingSchema = new mongoose.Schema(
+  {
     patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Patient",
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
+      required: true,
     },
     appointmentDate: {
-        type: Date,
+      type: Date,
     },
     appointmentTime: {
-        type: String,
+      type: String,
     },
     bookingStatus: {
-        type: String,
-        enum: ['pending', 'confirmed', 'cancelled'],
-        default: 'pending'
+      type: String,
+      enum: ["pending", "confirmed", "cancelled"],
+      default: "pending",
     },
     prescription: {
-        type: String,
+      type: String,
     },
     comments: {
-        type: String,
+      type: String,
     },
     prescriptionFile: {
-        type: String,
+      type: String,
     },
     consultationFee: {
-        type: Number,
+      type: Number,
     },
     serviceCharge: {
-        type: Number,
-        // required: true
+      type: Number,
     },
     totalAmount: {
-        type: Number,
+      type: Number,
     },
     receptionistId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Receptionist',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Receptionist",
     },
     type: {
-        type: String
-    }
-}, { timestamps: true })
+      type: String,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-
-const Booking = mongoose.model('Booking', BookingSchema)
-module.exports = Booking
+module.exports = mongoose.model("Booking", BookingSchema);

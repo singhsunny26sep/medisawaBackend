@@ -1,20 +1,23 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const ImageSchema = new mongoose.Schema({
+const ImageSchema = new mongoose.Schema(
+  {
     medicine: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Medicine',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Medicine",
     },
     image: {
-        type: String
+      type: String,
     },
     type: {
-        type: String
+      type: String,
     },
     isPrimary: {
-        type: Boolean,
-        default: false
-    }
-}, { timestamps: true })
-const Image = mongoose.model('Image', ImageSchema)
-module.exports = Image
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+
+module.exports = mongoose.model("Image", ImageSchema);

@@ -1,68 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const PlanSchema = new mongoose.Schema({
+const PlanSchema = new mongoose.Schema(
+  {
     planType: {
-        type: String,
+      type: String,
     },
     planCost: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     name: {
-        type: String
+      type: String,
     },
     description: {
-        type: String
+      type: String,
     },
     discount: {
-        type: Number,
-        default: 0
-        // required: true
+      type: Number,
+      default: 0,
     },
     discountType: {
-        type: String,
-        enum: ['percentage', 'fixed'],
-        default: 'fixed'
-    }
-}, { timestamps: true })
+      type: String,
+      enum: ["percentage", "fixed"],
+      default: "fixed",
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
 
-
-const Plan = mongoose.model('Plan', PlanSchema)
-module.exports = Plan;
-
-/* 
-doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Doctor',
-        required: true
-    },
-    patientId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Patient',
-        required: true
-    },
-    startDate: {
-        type: Date,
-        required: true
-    },
-    endDate: {
-        type: Date,
-        required: true
-    },
-    diagnosis: {
-        type: String,
-        required: true
-    },
-    treatment: {
-        type: String,
-        required: true
-    },
-    medication: {
-        type: String,
-        required: true
-    },
-    consultationFee: {
-        type: Number,
-        required: true
-    }
-*/
+module.exports = mongoose.model("Plan", PlanSchema);
