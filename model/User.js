@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      // required: true,
     },
     mobile: {
       type: String,
@@ -15,12 +15,12 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
       minlength: 5,
     },
     role: {
       type: String,
-      default: "user",
+      default: "patient",
       enum: [
         "user",
         "admin",

@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  registorUser,
+  registerUser,
   loginUser,
   getAllUsers,
   doctorProfile,
@@ -22,7 +22,7 @@ const userRouter = express.Router();
 
 // userRouter.get('')
 
-userRouter.post("/register", registrationValidation, registorUser);
+userRouter.post("/register", registrationValidation, registerUser);
 
 userRouter.post("/login", loginValidation, loginUser);
 

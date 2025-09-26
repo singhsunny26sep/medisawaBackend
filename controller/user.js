@@ -25,15 +25,26 @@ exports.getAllLabUser = async (req, res) => {
   }
 };
 
-exports.registorUser = async (req, res) => {
-  const name = req.body?.name;
-  const email = req.body?.email;
-  const mobile = req.body?.mobile;
-  const password = req.body?.password;
-  const role = req.body?.role;
-  const address = req.body?.address;
-  const image = req.files?.image;
+exports.registerUser = async (req, res) => {
+  const {
+    name,
+    email,
+    mobile,
+    password,
+    role,
+    address,
+    experience,
+    fee,
+    specialization,
+    symptom,
+  } = req.body;
+  let image = req.files?.image;
   try {
+    if (role && role === "admin") {
+      return res
+        .status(400)
+        .json({ success: false, msg: "Admin role is not allowed" });
+    }
     const checkUser = await User.findOne({ $or: [{ email }, { mobile }] });
     if (checkUser) {
       return res
@@ -46,48 +57,48 @@ exports.registorUser = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "Failed to register!" });
     }
-    const user = new User({
+    if (image) image = await uploadToCloudinary(image.tempFilePath);
+    let user = await User.create({
       name,
       email,
       mobile,
       password: hashedPass,
       role,
       address,
+      image,
     });
-    if (role && role === "admin") {
-      return res
-        .status(400)
-        .json({ success: false, msg: "Admin role is not allowed" });
-    } else if (role && role === "doctor") {
-    }
-    const patient = await Patient.create({
-      userId: user._id,
-      name,
-      email,
-      mobile,
-      password: hashedPass,
-      role,
-      address,
-    });
-    user.patientId.push(patient?._id);
-    if (image) {
-      let imageUrl = await uploadToCloudinary(image.tempFilePath);
-      user.image = imageUrl;
-    }
-    const result = await user.save();
-    if (result) {
-      const token = await generateToken(result);
-      return res.status(200).json({
-        success: true,
-        msg: `User registered successfully`,
-        result,
-        token,
+    if (role && role === "doctor" && user?.role === "doctor") {
+      const newDoctor = await Doctor.create({
+        userId: user?._id,
+        name: name,
+        specialization,
+        experience,
+        image,
+        email,
+        contactNumber: mobile,
+        fee,
+        address,
+        symptom,
       });
+      user.doctorId = newDoctor?._id;
+      user = await user.save();
+    } else if (user?.role === "patient") {
+      const patient = await Patient.create({
+        userId: user._id,
+        name,
+        image,
+        address,
+        contactNumber: mobile,
+      });
+      user.patientId.push(patient?._id);
+      user = await user.save();
     }
-    return res.status(400).json({
-      error: "Failed to register user",
-      success: false,
-      msg: "Failed to register user",
+    const token = await generateToken(user);
+    return res.status(200).json({
+      success: true,
+      msg: `User registered successfully`,
+      result: user,
+      token,
     });
   } catch (error) {
     console.log("error on registorUser: ", error);
@@ -130,10 +141,9 @@ exports.loginUser = async (req, res) => {
 exports.requistOtp = async (req, res) => {
   const mobile = req.body?.mobile;
   try {
-    const checkUser = await User.findOne({ mobile });
-    if (!checkUser) {
-      return res.status(400).json({ success: false, msg: "User not found!" });
-    }
+    let checkUser = await User.findOne({ mobile });
+    if (!checkUser) checkUser = await User.create({ mobile });
+    // return res.status(400).json({ success: false, msg: "User not found!" });
     let result = await urlSendTestOtp(mobile);
     console.log("result: ", result);
     if (result) {
@@ -159,7 +169,6 @@ exports.verifyOtp = async (req, res) => {
       return res.status(400).json({ success: false, msg: "User not found!" });
     }
     let result = await urlVerifyOtp(sessionId, otp);
-
     checkUser.fcmToken = fcmToken;
     await checkUser.save();
     if (result?.Status == "Success") {
@@ -273,7 +282,7 @@ exports.uploadProfileImage = async (req, res) => {
 };
 
 exports.userUpdate = async (req, res) => {
-  const id = req.params.id || req.payload?._id; //user id
+  const id = req.params.id || req.payload?._id;
   const name = req.body?.name;
   const email = req.body?.email;
   const mobile = req.body?.mobile;
@@ -284,8 +293,26 @@ exports.userUpdate = async (req, res) => {
       return res.status(400).json({ success: false, msg: "User not found!" });
     }
     if (name) checkUser.name = name;
-    if (email) checkUser.email = email;
-    if (mobile) checkUser.mobile = mobile;
+    if (email) {
+      const checkUserWithEmail = await User.findOne({ email: email });
+      if (checkUserWithEmail) {
+        return res.status(400).json({
+          success: false,
+          msg: "Email already exists",
+        });
+      }
+      checkUser.email = email;
+    }
+    if (mobile) {
+      const checkUserWithMobile = await User.findOne({ mobile: mobile });
+      if (checkUserWithMobile) {
+        return res.status(400).json({
+          success: false,
+          msg: "Mobile already exists",
+        });
+      }
+      checkUser.mobile = mobile;
+    }
     if (address) checkUser.address = address;
     const result = await checkUser.save();
     if (result) {
