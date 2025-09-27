@@ -12,7 +12,6 @@ const DoctorSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: true,
       minlength: 3,
       maxlength: 50,
     },
@@ -22,7 +21,6 @@ const DoctorSchema = new mongoose.Schema(
     },
     experience: {
       type: Number,
-      required: true,
       min: 0,
     },
     department: {
@@ -44,18 +42,15 @@ const DoctorSchema = new mongoose.Schema(
     },
     clinicAddress: {
       type: String,
-      required: true,
     },
     contactNumber: {
       type: Number,
-      required: true,
       minlength: 10,
       maxlength: 15,
       match: /^[0-9]{10,15}$/,
     },
     clinicContactNumber: {
       type: Number,
-      required: true,
       minlength: 10,
       maxlength: 15,
       match: /^[0-9]{10,15}$/,
@@ -72,11 +67,9 @@ const DoctorSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
-      required: true,
     },
     fee: {
       type: Number,
-      required: true,
     },
     oldFee: {
       type: Number,
