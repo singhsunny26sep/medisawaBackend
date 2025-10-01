@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      // required: true,
     },
     mobile: {
       type: String,
@@ -15,7 +14,6 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      // required: true,
       minlength: 5,
     },
     role: {
@@ -37,7 +35,6 @@ const UserSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      // required: true,
     },
     image: {
       type: String,
