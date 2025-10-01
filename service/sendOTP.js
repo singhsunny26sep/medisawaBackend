@@ -35,15 +35,14 @@ exports.urlSendTestOtp = async (mobile) => {
     var config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: `https://2factor.in/API/V1/${APIKEY}/SMS/+91${mobile}/AUTOGEN/OTP1`,
+      url: `https://2factor.in/API/V1/${APIKEY}/SMS/${mobile}/AUTOGEN`, // ✅ +91 hata diya, OTP1 bhi hata diya
       headers: {},
     };
     const response = await axios(config);
-    // console.log("response: ", response.data);
-    return response.data; // Return actual response data
+    return response.data;
   } catch (error) {
-    console.log("error: ", error);
-    throw error; // Ensure the error is propagated
+    console.log("error: ", error.response?.data || error.message);
+    throw error;
   }
 };
 
