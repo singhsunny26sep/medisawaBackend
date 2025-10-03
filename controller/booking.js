@@ -51,13 +51,11 @@ exports.getAllBookings = async (req, res) => {
     return res.status(404).json({ success: false, msg: "No bookings found!" });
   } catch (error) {
     console.error("Error on getAllBookings: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -94,13 +92,11 @@ exports.getBookingByPatientId = async (req, res) => {
     return res.status(200).json({ success: true, result });
   } catch (error) {
     console.error("Error on getBookingByPatientId: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -118,13 +114,11 @@ exports.getDoctorByIdBooking = async (req, res) => {
     return res.status(404).json({ success: false, msg: "No bookings found!" });
   } catch (error) {
     console.error("Error on getDoctorByIdBooking: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -195,13 +189,11 @@ exports.getBookingDoctor = async (req, res) => {
     // return res.status(404).json({ success: false, msg: "No bookings found!" });
   } catch (error) {
     console.error("Error on getBookingDoctor: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -240,13 +232,11 @@ exports.getBookingWithPatientAndDoctorId = async (req, res) => {
     return res.status(200).json({ success: true, result });
   } catch (error) {
     console.error("Error on getBookingWithPatientAndDoctorId:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -358,12 +348,10 @@ exports.addBooking = async (req, res) => {
       appointmentTime,
     });
     if (existingBooking) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          msg: `Doctor is already booked at ${TimeFormate(appointmentTime)} !`,
-        });
+      return res.status(400).json({
+        success: false,
+        msg: `Doctor is already booked at ${TimeFormate(appointmentTime)} !`,
+      });
     }
     let query = {
       doctorId: doctorId,
@@ -377,12 +365,10 @@ exports.addBooking = async (req, res) => {
 
     const checkPatientAlready = await Booking.findOne(query);
     if (checkPatientAlready) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          msg: `Patient is already booked at the same date ${appointmentDate}!`,
-        });
+      return res.status(400).json({
+        success: false,
+        msg: `Patient is already booked at the same date ${appointmentDate}!`,
+      });
     }
 
     // 5️⃣ Calculate total amount
@@ -411,22 +397,18 @@ exports.addBooking = async (req, res) => {
     );
     await newBooking.save();
 
-    return res
-      .status(201)
-      .json({
-        success: true,
-        msg: "Booking confirmed successfully!",
-        result: newBooking,
-      });
+    return res.status(201).json({
+      success: true,
+      msg: "Booking confirmed successfully!",
+      result: newBooking,
+    });
   } catch (error) {
     console.log("Error on addBooking: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -455,13 +437,11 @@ exports.confirmBooking = async (req, res) => {
       .json({ success: true, msg: "Booking confirmed successfully!", booking });
   } catch (error) {
     console.log("Error on confirmBooking: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -485,13 +465,11 @@ exports.bookingStatusChange = async (req, res) => {
       .json({ success: true, msg: "Booking confirmed successfully!", booking });
   } catch (error) {
     console.log("Error on bookingStatusChange: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -520,13 +498,11 @@ exports.cancelBooking = async (req, res) => {
       .json({ success: true, msg: "Booking cancelled successfully!", booking });
   } catch (error) {
     console.log("Error on cancelBooking: ", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -535,9 +511,7 @@ exports.cancelBooking = async (req, res) => {
 // Receptionist booking for a patient
 exports.addBookingByReceptionist = async (req, res) => {
   // console.log(" ================================ req.body ======================================");
-
   // console.log("req.body: ", req.body);
-
   const {
     doctorId,
     appointmentDate,
@@ -546,18 +520,15 @@ exports.addBookingByReceptionist = async (req, res) => {
     serviceCharge = 0,
   } = req.body;
   const userId = req.payload._id; // Receptionist's ID
-
   try {
     // 1️⃣ Check if the user already exists with the given mobile number
     let user = await User.findOne({ mobile: patientDetails?.mobile });
     let patient;
-
     // 4️⃣ Validate doctor existence
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
       return res.status(404).json({ success: false, msg: "Doctor not found!" });
     }
-
     if (!user) {
       // Create a new user if not found
       user = new User({
@@ -571,13 +542,10 @@ exports.addBookingByReceptionist = async (req, res) => {
       });
       await user.save();
     }
-
     // 2️⃣ Find all patients linked to this userId
     let patients = await Patient.find({ userId: user._id });
-
     // 3️⃣ Check if a patient with the same name exists
     let existingPatient = patients.find((p) => p.name === patientDetails?.name);
-
     if (existingPatient) {
       patient = existingPatient;
     } else {
@@ -596,24 +564,19 @@ exports.addBookingByReceptionist = async (req, res) => {
         medications: patientDetails?.medications,
         department: doctor?.department,
       });
-
       await patient.save();
-
       // Update user's patient list
       user.patientId.push(patient._id);
       await user.save();
     }
-
     // 5️⃣ Ensure doctor has working hours set
     if (!doctor.startTime || !doctor.endTime) {
       return res
         .status(400)
         .json({ success: false, msg: "Doctor's working hours are not set." });
     }
-
     // 6️⃣ Generate time slots for the doctor
     const slots = generateTimeSlots(doctor.startTime, doctor.endTime, 10);
-
     // 7️⃣ Fetch booked slots for the given date
     const bookedAppointments = await Booking.find({
       doctorId: doctor._id,
@@ -621,43 +584,32 @@ exports.addBookingByReceptionist = async (req, res) => {
       // appointmentDate: new Date(appointmentDate),
       bookingStatus: { $ne: "cancelled" },
     });
-
     const bookedTimes = bookedAppointments.map(
       (booking) => booking.appointmentTime
     );
-
     // 8️⃣ Find the next available slot
     const availableSlot = slots.find((slot) => !bookedTimes.includes(slot));
-
     if (!availableSlot) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          msg: "No available slots for the selected date.",
-        });
+      return res.status(400).json({
+        success: false,
+        msg: "No available slots for the selected date.",
+      });
     }
-
     // 9️⃣ Prevent double booking for the same patient on the same day
     const existingBooking = await Booking.findOne({
       doctorId,
       appointmentDate,
       patientId: patient._id,
     });
-
     if (existingBooking) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          msg: `Patient already booked on ${appointmentDate}.`,
-        });
+      return res.status(400).json({
+        success: false,
+        msg: `Patient already booked on ${appointmentDate}.`,
+      });
     }
-
     // 🔟 Calculate total amount
     const totalAmount =
       Number(consultationFee) + serviceCharge ? Number(serviceCharge) : 0;
-
     //  Create a new booking
     const newBooking = new Booking({
       patientId: patient._id,
@@ -671,27 +623,21 @@ exports.addBookingByReceptionist = async (req, res) => {
       bookingStatus: "confirmed",
       receptionistId: userId,
     });
-
     await newBooking.save();
-
     //  Send notification
     // await bookingNotification(doctorId, patient._id, appointmentDate, availableSlot);
-    return res
-      .status(201)
-      .json({
-        success: true,
-        msg: "Booking confirmed successfully!",
-        result: newBooking,
-      });
+    return res.status(201).json({
+      success: true,
+      msg: "Booking confirmed successfully!",
+      result: newBooking,
+    });
   } catch (error) {
     console.error("Error in addBookingByReceptionist:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -707,12 +653,10 @@ exports.getPrescriptions = async (req, res) => {
       .json({ success: false, msg: "Prescription not found" });
   } catch (error) {
     console.error("Error in getPrescriptions:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Internal Server Error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
