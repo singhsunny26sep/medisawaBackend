@@ -1,7 +1,8 @@
-const express = require('express')
-const { dashobard } = require('../controller/dashobard')
-const dashboardRouter = express.Router()
+const express = require("express");
+const dashboardRouter = express.Router();
 
-dashboardRouter.get('/', dashobard)
+const { dashobard } = require("../controller/dashobard");
 
-module.exports = dashboardRouter
+dashboardRouter.get("/", dashobard);
+
+module.exports = dashboardRouter;

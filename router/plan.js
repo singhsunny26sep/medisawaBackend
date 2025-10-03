@@ -1,16 +1,18 @@
-const express = require('express');
-const { getPlans, addPlan, updatePlan, deletePlan } = require('../controller/plan');
-const { verifyToken } = require('../middleware/authValidation');
+const express = require("express");
 const planRouter = express.Router();
 
-planRouter.get('/', getPlans)
+const {
+  getPlans,
+  addPlan,
+  updatePlan,
+  deletePlan,
+} = require("../controller/plan");
+const { verifyToken } = require("../middleware/authValidation");
 
-planRouter.get('/:id', getPlans)
+planRouter.get("/", getPlans);
+planRouter.get("/:id", getPlans);
+planRouter.post("/add", verifyToken, addPlan);
+planRouter.put("/:id", verifyToken, updatePlan);
+planRouter.delete("/:id", verifyToken, deletePlan);
 
-planRouter.post('/add', verifyToken, addPlan)
-
-planRouter.put('/:id', verifyToken, updatePlan)
-
-planRouter.delete('/:id', verifyToken, deletePlan)
-
-module.exports = planRouter
+module.exports = planRouter;

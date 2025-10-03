@@ -1,13 +1,16 @@
-const express = require('express');
-const { verifyToken } = require('../middleware/authValidation');
-const { getAllCartData, addToCart, removeFromCart } = require('../controller/cart');
+const express = require("express");
 const cartRouter = express.Router();
 
-cartRouter.get('/', verifyToken, getAllCartData)
+const { verifyToken } = require("../middleware/authValidation");
+const {
+  getAllCartData,
+  addToCart,
+  removeFromCart,
+} = require("../controller/cart");
 
-cartRouter.post('/:id', verifyToken, addToCart)
-
+cartRouter.get("/", verifyToken, getAllCartData);
+cartRouter.post("/:id", verifyToken, addToCart);
 // cartRouter.delete('/remove/:id', verifyToken, removeFromCart)
-cartRouter.delete('/remove/:id', verifyToken, addToCart)
+cartRouter.delete("/remove/:id", verifyToken, addToCart);
 
-module.exports = cartRouter
+module.exports = cartRouter;

@@ -1,5 +1,6 @@
 const express = require("express");
 const departRouter = express.Router();
+
 const { verifyToken } = require("../middleware/authValidation");
 const {
   getDepartments,

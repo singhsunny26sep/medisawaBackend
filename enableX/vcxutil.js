@@ -74,7 +74,10 @@ vcxutil.connectServer = (options, data, callback) => {
           callback("error", parsed);
         }
       } catch (e) {
-        callback("error", { error: "Invalid JSON response", raw: chunk.toString() });
+        callback("error", {
+          error: "Invalid JSON response",
+          raw: chunk.toString(),
+        });
       }
     });
   });

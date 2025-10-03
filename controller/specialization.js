@@ -46,13 +46,11 @@ exports.getAllSpecializationPagination = async (req, res) => {
     // Calculate total pages
     const totalPages = Math.ceil(totalDocuments / limit);
     if (result.length > 0) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          result,
-          pagination: { totalDocuments, totalPages, currentPage: page, limit },
-        });
+      return res.status(200).json({
+        success: true,
+        result,
+        pagination: { totalDocuments, totalPages, currentPage: page, limit },
+      });
     }
     return res
       .status(404)
@@ -92,13 +90,11 @@ exports.addSpecialization = async (req, res) => {
     });
     const result = await newDepartment.save();
     if (result) {
-      return res
-        .status(201)
-        .json({
-          success: true,
-          msg: "Specialization added successfully!",
-          data: result,
-        });
+      return res.status(201).json({
+        success: true,
+        msg: "Specialization added successfully!",
+        data: result,
+      });
     }
     return res
       .status(400)
@@ -138,13 +134,11 @@ exports.updateSpecialization = async (req, res) => {
 
     const result = await checkDepartments.save();
     if (result) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          msg: "Specialization updated successfully!",
-          data: result,
-        });
+      return res.status(200).json({
+        success: true,
+        msg: "Specialization updated successfully!",
+        data: result,
+      });
     }
     return res
       .status(400)

@@ -10,23 +10,21 @@ const {
 const bcrypt = require("bcryptjs");
 let salt = 10;
 
-
-
-
 exports.getAllDoctorUser = async (req, res) => {
   try {
-    const users = await User.find({ role: "doctor" })
-      .populate({
-        path: "doctorId",
-        populate: [
-          { path: "specialization", select: "name" },
-          { path: "department", select: "name" },
-        ],
-      });
+    const users = await User.find({ role: "doctor" }).populate({
+      path: "doctorId",
+      populate: [
+        { path: "specialization", select: "name" },
+        { path: "department", select: "name" },
+      ],
+    });
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Doctor users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Doctor users not found!" });
   } catch (error) {
     console.log("error on getAllDoctorUser: ", error);
     return res
@@ -37,12 +35,13 @@ exports.getAllDoctorUser = async (req, res) => {
 
 exports.getAllPatientUser = async (req, res) => {
   try {
-    const users = await User.find({ role: "patient" })
-      .populate("patientId");
+    const users = await User.find({ role: "patient" }).populate("patientId");
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Patient users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Patient users not found!" });
   } catch (error) {
     console.log("error on getAllPatientUser: ", error);
     return res
@@ -57,7 +56,9 @@ exports.getAllManagerUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Manager users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Manager users not found!" });
   } catch (error) {
     console.log("error on getAllManagerUser: ", error);
     return res
@@ -72,7 +73,9 @@ exports.getAllHospitalUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Hospital users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Hospital users not found!" });
   } catch (error) {
     console.log("error on getAllHospitalUser: ", error);
     return res
@@ -87,7 +90,9 @@ exports.getAllNursingUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Nursing users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Nursing users not found!" });
   } catch (error) {
     console.log("error on getAllNursingUser: ", error);
     return res
@@ -102,7 +107,9 @@ exports.getAllMedicalUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Medical users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Medical users not found!" });
   } catch (error) {
     console.log("error on getAllMedicalUser: ", error);
     return res
@@ -117,7 +124,9 @@ exports.getAllReceptionistUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Receptionist users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Receptionist users not found!" });
   } catch (error) {
     console.log("error on getAllReceptionistUser: ", error);
     return res
@@ -132,7 +141,9 @@ exports.getAllLabBoyUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Lab boy users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Lab boy users not found!" });
   } catch (error) {
     console.log("error on getAllLabBoyUser: ", error);
     return res
@@ -147,7 +158,9 @@ exports.getAllAdminUser = async (req, res) => {
     if (users && users.length > 0) {
       return res.status(200).json({ success: true, result: users });
     }
-    return res.status(404).json({ success: false, msg: "Admin users not found!" });
+    return res
+      .status(404)
+      .json({ success: false, msg: "Admin users not found!" });
   } catch (error) {
     console.log("error on getAllAdminUser: ", error);
     return res
