@@ -1,6 +1,6 @@
 // const vcxroom = require("../enableX/vcxroom");
 const { v4: uuidv4 } = require("uuid");
-const { generateAgoraToken } = require("../agora/agoraToken");
+const { generateAgoraToken, generateRtmToken } = require("../agora/agoraToken");
 const Call = require("../model/Call");
 const User = require("../model/User");
 const { sendSingleNotification } = require("../service/notification");
@@ -117,7 +117,9 @@ exports.initiateCall = async (req, res) => {
     }
     const channelName = `call_${uuidv4()}`;
     const uid = userId;
-    const token = await generateAgoraToken(channelName, uid);
+    const rtcToken = generateAgoraToken(channelName, uid);
+    const callerRtmToken = generateRtmToken(userId.toString());
+    const receiverRtmToken = generateRtmToken(recieverId.toString());
     const result = await Call.create({
       caller: userId,
       receiver: recieverId,
@@ -144,9 +146,11 @@ exports.initiateCall = async (req, res) => {
         callType,
         channelName,
         uid,
+        callerRtmToken,
+        receiverRtmToken,
         // roomId,
         receiver: { name: checkReciever?.name, role: checkReciever.role },
-        token,
+        rtcToken,
       },
     });
   } catch (error) {
