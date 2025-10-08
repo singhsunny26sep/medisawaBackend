@@ -57,6 +57,28 @@ exports.getAllDoctors = async (req, res) => {
   }
 };
 
+exports.toggleActiveStatus = async (req, res) => {
+  const id = req.params?.doctorId;
+  try {
+    const doctor = await Doctor.findById(id);
+    if (!doctor) {
+      return res.status(404).json({ msg: "Doctor not found!", success: false });
+    }
+    doctor.isActive = !doctor.isActive;
+    await doctor.save();
+    return res.status(200).json({
+      msg: "Doctor status updated successfully",
+      success: true,
+      doctor,
+    });
+  } catch (error) {
+    console.log("error on toggleActiveStatus: ", error);
+    return res
+      .status(500)
+      .json({ error: error, success: false, msg: error.message });
+  }
+};
+
 exports.topRatedDoctor = async (req, res) => {
   try {
     const now = new Date();
