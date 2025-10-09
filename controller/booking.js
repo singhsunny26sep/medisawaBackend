@@ -31,7 +31,6 @@ exports.getAllBookings = async (req, res) => {
           "reports"
         );
         const report = await Report.find({ appointmentId: id });
-
         return res
           .status(200)
           .json({ success: true, result, prescription, labTest, report });
@@ -44,7 +43,6 @@ exports.getAllBookings = async (req, res) => {
       .populate("patientId")
       .populate("userId")
       .populate("doctorId");
-
     if (result) {
       return res.status(200).json({ success: true, result });
     }
@@ -388,7 +386,6 @@ exports.addBooking = async (req, res) => {
       totalAmount,
       // bookingStatus: 'confirmed' // Directly confirm the booking
     });
-
     await bookingNotification(
       doctorId,
       mongoose.Types.ObjectId.isValid(patientId) ? patientId : userId,
@@ -396,7 +393,6 @@ exports.addBooking = async (req, res) => {
       appointmentTime
     );
     await newBooking.save();
-
     return res.status(201).json({
       success: true,
       msg: "Booking confirmed successfully!",

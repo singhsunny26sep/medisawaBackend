@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
-const port = process.env.PORT || 5000;
-const fileUpload = require("express-fileupload");
-const { db } = require("./db/db");
 const cors = require("cors");
+const morgan = require("morgan");
+const fileUpload = require("express-fileupload");
+require("dotenv").config();
+
+const port = process.env.PORT || 5600;
+const { db } = require("./db/db");
+
 const userRouter = require("./router/user");
 const patientRouter = require("./router/patient");
 const docRouter = require("./router/doctor");
@@ -37,6 +40,7 @@ db();
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(express.json());
 app.use(cors());
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => res.send("Hello World!"));
 

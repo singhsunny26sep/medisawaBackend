@@ -23,12 +23,10 @@ exports.sendSingleNotification = async (
   // console.log("description", description);
   // console.log("senderId", senderId);
   // console.log("type", type);
-
   let admin1;
   if (!mongoose.Types.ObjectId.isValid(senderId)) {
     admin1 = await User.findOne({ role: "admin" });
   }
-
   const user = await User.findById(userId);
   const result = Notification.create({
     receiverId: userId,
@@ -38,7 +36,6 @@ exports.sendSingleNotification = async (
     type,
   });
   console.log("result: ", result);
-
   const message = {
     token: user.fcmToken,
     notification: {
@@ -46,13 +43,9 @@ exports.sendSingleNotification = async (
       body: description,
     },
   };
-
   // user.notifications.push(tempDoc?._id);
-
   // await user.save();
-
   // await tempDoc.save()
-
   await admin.messaging().send(message);
 };
 
@@ -63,9 +56,7 @@ exports.sendMultipleNotification = async (
   type
 ) => {
   const users = await User.find();
-
   const tokens = users.map((user) => user.fcmToken).filter((token) => token);
-
   const message = {
     tokens, // List of tokens for multiple users
     notification: {
@@ -86,7 +77,6 @@ exports.sendMultipleNotification = async (
     type,
   }));
   await Notification.insertMany(notificationDocs);
-
   return response;
 };
 
@@ -99,7 +89,6 @@ exports.bookingNotification = async (
   try {
     const doctor = await User.findById(doctorId);
     const patient = await User.findById(patientId);
-
     if (!doctor?.fcmToken) {
       return "No fcm token in doctor!";
     }
