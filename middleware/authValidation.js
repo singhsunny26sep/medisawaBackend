@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/User");
 require("dotenv").config();
 
-const secret = process.env.SECRET_KEY;
+const secret = process.env.JWT_SECRET;
 
 exports.generateToken = async (checkUser) => {
   const token = jwt.sign(
@@ -14,8 +14,8 @@ exports.generateToken = async (checkUser) => {
       address: checkUser?.address,
       role: checkUser?.role,
     },
-    process.env.SECRET_KEY,
-    { expiresIn: "7d" }
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
   );
   return token;
 };
