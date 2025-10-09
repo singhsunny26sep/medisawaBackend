@@ -1,3 +1,4 @@
 node_modules
 package-lock.json
 ./utils/logger
+medisewa-e71de-firebase-adminsdk.json
