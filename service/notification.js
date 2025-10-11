@@ -17,25 +17,18 @@ exports.sendSingleNotification = async (
   senderId,
   type
 ) => {
-  //user id means reciever id
-  // console.log("userId", userId);
-  // console.log("name", name);
-  // console.log("description", description);
-  // console.log("senderId", senderId);
-  // console.log("type", type);
   let admin1;
   if (!mongoose.Types.ObjectId.isValid(senderId)) {
     admin1 = await User.findOne({ role: "admin" });
   }
   const user = await User.findById(userId);
-  const result = Notification.create({
+  await Notification.create({
     receiverId: userId,
     title: name,
     message: description,
     senderId: senderId ? senderId : admin1?._id,
     type,
   });
-  console.log("result: ", result);
   const message = {
     token: user.fcmToken,
     notification: {
@@ -43,9 +36,6 @@ exports.sendSingleNotification = async (
       body: description,
     },
   };
-  // user.notifications.push(tempDoc?._id);
-  // await user.save();
-  // await tempDoc.save()
   await admin.messaging().send(message);
 };
 
@@ -81,38 +71,36 @@ exports.sendMultipleNotification = async (
 };
 
 exports.bookingNotification = async (
-  doctorId,
-  patientId,
+  doctorUserId,
+  patientUserId,
   bookingDate,
   bookingTime
 ) => {
   try {
-    const doctor = await User.findById(doctorId);
-    const patient = await User.findById(patientId);
-    if (!doctor?.fcmToken) {
-      return "No fcm token in doctor!";
+    const doctor = await User.findById(doctorUserId);
+    const patient = await User.findById(patientUserId);
+    if (doctor?.fcmToken) {
+      await this.sendSingleNotification(
+        doctorUserId,
+        "New Booking",
+        `New booking for ${patient.name} on ${bookingDate} at ${TimeFormate(
+          bookingTime
+        )}`,
+        patientUserId,
+        "booking"
+      );
     }
-    if (!patient?.fcmToken) {
-      return "No fcm token in patient!";
+    if (patient?.fcmToken) {
+      await this.sendSingleNotification(
+        patientUserId,
+        "Booking Confirmed",
+        `you booking confirm for ${patient?.name} to ${
+          doctor?.name
+        } on ${bookingDate} at ${TimeFormate(bookingTime)}`,
+        doctorUserId,
+        "booking"
+      );
     }
-    await this.sendSingleNotification(
-      doctorId,
-      "New Booking",
-      `New booking for ${patient.name} on ${bookingDate} at ${TimeFormate(
-        bookingTime
-      )}`,
-      patientId,
-      "booking"
-    );
-    await this.sendSingleNotification(
-      patientId,
-      "Booking Confirmed",
-      `you booking confirm for ${patient?.name} to ${
-        doctor?.name
-      } on ${bookingDate} at ${TimeFormate(bookingTime)}`,
-      doctorId,
-      "booking"
-    );
   } catch (error) {
     console.log("error on bookgin notification: ", error);
     throw new Error("bookingNotification error");

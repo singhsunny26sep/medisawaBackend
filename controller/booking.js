@@ -309,37 +309,36 @@ exports.addBooking = async (req, res) => {
     appointmentTime,
     consultationFee,
     serviceCharge,
-    type,
   } = req.body;
   const patientId = req.params?.patientId;
   const userId = req.payload._id;
-
   try {
-    // 1️⃣ Check if the doctor exists
-    const doctor = await Doctor.findById(doctorId);
-
-    if (!doctor) {
-      return res.status(404).json({ success: false, msg: "Doctor not found!" });
-    }
-
-    // 2️⃣ Validate patient existence (if provided)
+    let patient = null;
     if (patientId && mongoose.Types.ObjectId.isValid(patientId)) {
-      const patient = await User.findById(patientId);
+      patient = await Patient.findById(patientId);
       if (!patient) {
         return res
           .status(404)
           .json({ success: false, msg: "Patient not found!" });
       }
     }
-
-    // 3️⃣ Validate appointment date (must be in the future)
-    if (!canBookAppointment(appointmentDate, appointmentTime, doctor)) {
-      return res
-        .status(400)
-        .json({ msg: "Please book before appointment time", success: false });
+    const patientUserId = patient?.userId;
+    if (userId?.toString() !== patientUserId?.toString()) {
+      return res.status(403).json({
+        success: false,
+        msg: "You are not authorized to book this appointment",
+      });
     }
-
-    // 4️⃣ Prevent double booking for the same doctor at the same time
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ success: false, msg: "Doctor not found!" });
+    }
+    const doctorUserId = doctor?.userId;
+    // if (!canBookAppointment(appointmentDate, appointmentTime, doctor)) {
+    //   return res
+    //     .status(400)
+    //     .json({ msg: "Please book before appointment time", success: false });
+    // }
     const existingBooking = await Booking.findOne({
       doctorId,
       appointmentDate,
@@ -360,7 +359,6 @@ exports.addBooking = async (req, res) => {
     } else {
       query.userId = userId;
     }
-
     const checkPatientAlready = await Booking.findOne(query);
     if (checkPatientAlready) {
       return res.status(400).json({
@@ -368,15 +366,9 @@ exports.addBooking = async (req, res) => {
         msg: `Patient is already booked at the same date ${appointmentDate}!`,
       });
     }
-
-    // 5️⃣ Calculate total amount
     const totalAmount = (consultationFee || 0) + (serviceCharge || 0);
-
-    // 6️⃣ Create a new booking
     const newBooking = new Booking({
-      patientId: mongoose.Types.ObjectId.isValid(patientId)
-        ? patientId
-        : userId, // If patientId is not provided, use userId
+      patientId,
       userId,
       doctorId,
       appointmentDate,
@@ -386,13 +378,13 @@ exports.addBooking = async (req, res) => {
       totalAmount,
       // bookingStatus: 'confirmed' // Directly confirm the booking
     });
+    await newBooking.save();
     await bookingNotification(
-      doctorId,
-      mongoose.Types.ObjectId.isValid(patientId) ? patientId : userId,
+      doctorUserId,
+      patientUserId,
       appointmentDate,
       appointmentTime
     );
-    await newBooking.save();
     return res.status(201).json({
       success: true,
       msg: "Booking confirmed successfully!",

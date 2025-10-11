@@ -319,9 +319,7 @@ exports.addProfile = async (req, res) => {
     const checkDoctory = await Doctor.findOne({ userId: id });
     if (!checkDoctory) {
       let imageUrl;
-      if (image) {
-        imageUrl = await uploadToCloudinary(image.tempFilePath);
-      }
+      if (image) imageUrl = await uploadToCloudinary(image.tempFilePath);
       const newDoctor = new Doctor({
         userId: id,
         name: name ? name : checkUser?.name,
@@ -344,12 +342,12 @@ exports.addProfile = async (req, res) => {
         address,
       });
       await Specialization.updateOne(
-        { _id: specialization }, // Find the specialization by its ID
-        { $inc: { doctorCount: 1 } } // Increment doctorCount by 1
+        { _id: specialization },
+        { $inc: { doctorCount: 1 } }
       );
       await Department.updateOne(
-        { _id: department }, // Find the specialization by its ID
-        { $inc: { doctorCount: 1 } } // Increment doctorCount by 1
+        { _id: department },
+        { $inc: { doctorCount: 1 } }
       );
       checkUser.doctorId = newDoctor._id;
       await checkUser.save();

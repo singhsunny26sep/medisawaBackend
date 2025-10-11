@@ -2,6 +2,8 @@ const { generateToken } = require("../middleware/authValidation");
 const Doctor = require("../model/Doctor");
 const Patient = require("../model/Patient");
 const User = require("../model/User");
+const Specialization = require("../model/Specialization");
+const Department = require("../model/Department");
 const { urlVerifyOtp, urlSendTestOtp } = require("../service/sendOTP");
 const {
   uploadToCloudinary,
@@ -195,6 +197,7 @@ exports.registerUser = async (req, res) => {
     experience,
     fee,
     specialization,
+    department,
     symptom,
     fcmToken,
   } = req.body;
@@ -233,6 +236,7 @@ exports.registerUser = async (req, res) => {
         userId: user?._id,
         name: name,
         specialization,
+        department,
         experience,
         image,
         email,
@@ -243,6 +247,18 @@ exports.registerUser = async (req, res) => {
       });
       user.doctorId = newDoctor?._id;
       user = await user.save();
+      if (specialization) {
+        await Specialization.updateOne(
+          { _id: specialization },
+          { $inc: { doctorCount: 1 } }
+        );
+      }
+      if (department) {
+        await Department.updateOne(
+          { _id: department },
+          { $inc: { doctorCount: 1 } }
+        );
+      }
     } else if (user?.role === "patient") {
       const patient = await Patient.create({
         userId: user._id,
