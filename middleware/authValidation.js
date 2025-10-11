@@ -22,28 +22,19 @@ exports.generateToken = async (checkUser) => {
 
 exports.verifyToken = async (req, res, next) => {
   let token = req.headers["authorization"];
-  // console.log(" ============================ token ====================================");
-  // console.log("token: ", token);
   try {
     if (!token) {
-      // console.log("token: ", token);
       return res.status(401).json({ msg: "Access Denied!", success: false });
     }
     let splitToken = token.split(" ")[1];
-    // console.log("split token: ", splitToken);
     if (!splitToken) {
-      // console.log("this come here", splitToken);
       return res.status(401).json({ msg: "Access Denied!", success: false });
     }
     const decodedToken = jwt.verify(splitToken, secret);
-    // const decodedToken = jwt.verify(token, secret);
-    // console.log("decoded token: ", decodedToken);
     if (!decodedToken) {
       return res.status(401).json({ msg: "Access Denied!", success: false });
     }
-    // const checkUser = await User.findOne({ where: { id: decodedToken.result.id } })
     const checkUser = await User.findById(decodedToken?._id);
-    // console.log("checkUser", checkUser);
     if (checkUser) {
       req.payload = checkUser;
       next();
