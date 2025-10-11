@@ -36,6 +36,7 @@ const packageRouter = require("./router/package");
 const paymentRouter = require("./router/payment");
 const memberShipCardRouter = require("./router/memberShipCard");
 const leaveRouter = require("./router/leave");
+const timeSlotRouter = require("./router/timeSlots");
 
 db();
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
@@ -73,5 +74,6 @@ app.use("/api/v1/packages", packageRouter);
 app.use("/api/v1/payment", paymentRouter);
 app.use("/api/v1/membership-card", memberShipCardRouter);
 app.use("/api/v1/leaves", leaveRouter);
+app.use("/api/v1/time-slots", timeSlotRouter);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

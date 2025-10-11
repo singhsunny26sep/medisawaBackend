@@ -140,15 +140,14 @@ exports.getLeaveById = async (id) => {
   return leave;
 };
 
-exports.updateLeave = async (id, data) => {
+exports.updateLeave = async (leaveId, data) => {
   const leave = await Leave.findOne({ _id: id, isDeleted: false });
   if (!leave) throwError(404, "Leave not found");
-  if (data.startDate && data.endDate) {
-    const { start, end, diffDays } = validateLeaveDates(
-      data.startDate,
-      data.endDate
-    );
+  const { startDate, endDate, reason } = data;
+  if (startDate && endDate) {
+    const { start, end, diffDays } = validateLeaveDates(startDate, endDate);
     const existing = await Leave.find({
+      _id: { $ne: leaveId },
       doctorId: leave?.doctorId,
       startDate: { $lte: end },
       endDate: { $gte: start },
@@ -156,11 +155,11 @@ exports.updateLeave = async (id, data) => {
     if (existing.length > 0) {
       throwError(409, "Leave already exists for this date range");
     }
-    data.startDate = start;
-    data.endDate = end;
-    data.noOfDays = diffDays;
+    leave.startDate = start;
+    leave.endDate = end;
+    leave.noOfDays = diffDays;
   }
-  Object.assign(leave, data);
+  if (reason) leave.reason = reason;
   await leave.save();
   return leave;
 };
