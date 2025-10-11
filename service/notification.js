@@ -22,13 +22,6 @@ exports.sendSingleNotification = async (
     admin1 = await User.findOne({ role: "admin" });
   }
   const user = await User.findById(userId);
-  await Notification.create({
-    receiverId: userId,
-    title: name,
-    message: description,
-    senderId: senderId ? senderId : admin1?._id,
-    type,
-  });
   const message = {
     token: user.fcmToken,
     notification: {
@@ -37,6 +30,13 @@ exports.sendSingleNotification = async (
     },
   };
   await admin.messaging().send(message);
+  await Notification.create({
+    receiverId: userId,
+    title: name,
+    message: description,
+    senderId: senderId ? senderId : admin1?._id,
+    type,
+  });
 };
 
 exports.sendMultipleNotification = async (
