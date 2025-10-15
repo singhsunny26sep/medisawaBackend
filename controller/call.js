@@ -4,6 +4,8 @@ const { generateAgoraToken, generateRtmToken } = require("../agora/agoraToken");
 const Call = require("../model/Call");
 const User = require("../model/User");
 const { sendSingleNotification } = require("../service/notification");
+const { sendSuccess, sendError } = require("../utils/response");
+const callService = require("../service/callService");
 
 // const creatToken = async (body) => {
 //   try {
@@ -294,3 +296,32 @@ exports.endCall = async (req, res) => {
         return res.status(500).json({ error: error, success: false, msg: error.message })
     }
 } */
+
+exports.getCallHistory = async (req, res) => {
+  try {
+    const userId = req.query.userId || req.payload?._id;
+    if (!userId) return sendError(res, 400, "User ID is required");
+    const filters = {
+      callType: req.query.callType,
+      callStatus: req.query.callStatus,
+      isInCall: req.query.isInCall,
+    };
+    const pagination = {
+      page: parseInt(req.query.page) || 1,
+      limit: parseInt(req.query.limit) || 10,
+    };
+    const result = await callService.getCallHistory(
+      userId,
+      filters,
+      pagination
+    );
+    return sendSuccess(res, 200, "Call history fetched successfully", result);
+  } catch (error) {
+    console.error("Error fetching call history:", error);
+    return sendError(
+      res,
+      error.statusCode || 500,
+      error.message || "Internal Server Error"
+    );
+  }
+};
