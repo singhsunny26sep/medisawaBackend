@@ -22,7 +22,7 @@ const NotificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["booking", "appointment", "message", "review"],
+      enum: ["booking", "appointment", "message", "review", "call"],
       required: true,
     },
     bookingId: {

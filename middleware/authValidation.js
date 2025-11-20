@@ -24,22 +24,30 @@ exports.verifyToken = async (req, res, next) => {
   let token = req.headers["authorization"];
   try {
     if (!token) {
-      return res.status(401).json({ msg: "Access Denied!", success: false });
+      return res
+        .status(401)
+        .json({ msg: "Access Denied! Missing Token", success: false });
     }
     let splitToken = token.split(" ")[1];
     if (!splitToken) {
-      return res.status(401).json({ msg: "Access Denied!", success: false });
+      return res
+        .status(401)
+        .json({ msg: "Access Denied! Unexpected Token", success: false });
     }
     const decodedToken = jwt.verify(splitToken, secret);
     if (!decodedToken) {
-      return res.status(401).json({ msg: "Access Denied!", success: false });
+      return res
+        .status(401)
+        .json({ msg: "Access Denied! Invalid Token", success: false });
     }
     const checkUser = await User.findById(decodedToken?._id);
     if (checkUser) {
       req.payload = checkUser;
       next();
     } else {
-      return res.status(401).json({ msg: "Access Denied!", success: false });
+      return res
+        .status(401)
+        .json({ msg: "Access Denied! User not found", success: false });
     }
   } catch (error) {
     console.log("error on auth: ", error);

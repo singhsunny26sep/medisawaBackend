@@ -1,5 +1,4 @@
 const LabTest = require("../model/LabTest");
-const Patient = require("../model/Patient");
 const Report = require("../model/Report");
 const Test = require("../model/Test");
 const User = require("../model/User");
@@ -8,22 +7,13 @@ const {
   deleteFromCloudinary,
 } = require("../service/uploadImage");
 
-exports.getAllTests = async (req, res) => {
+exports.getTestById = async (req, res) => {
   const id = req.params?.id;
   try {
-    if (id) {
-      const tests = await Test.findById(id).populate("userId");
-      return res.status(200).json({ success: true, result: tests });
-    }
-    const result = await Test.find()
-      .sort({ createdAt: -1 })
-      .populate("userId", "name email mobile address image");
-    if (result) {
-      return res.status(200).json({ success: true, result });
-    }
-    return res.status(404).json({ success: false, msg: "No tests found!" });
+    const test = await Test.findById(id).populate("userId");
+    return res.status(200).json({ success: true, result: test });
   } catch (error) {
-    console.log("error on getAllTests: ", error);
+    console.log("error on getTest: ", error);
     return res
       .status(500)
       .json({ error: error, success: false, msg: error.message });
@@ -84,6 +74,97 @@ exports.addTest = async (req, res) => {
     return res
       .status(500)
       .json({ error: error, success: false, msg: error.message });
+  }
+};
+
+exports.getAllTests = async (req, res) => {
+  try {
+    let {
+      page = 1,
+      limit = 10,
+      search = "",
+      sortBy = "createdAt",
+      sortOrder = "desc",
+    } = req.query;
+    page = Number(page);
+    limit = Number(limit);
+    const matchQuery = {};
+    if (search && search.trim() !== "") {
+      matchQuery.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+    const skip = (page - 1) * limit;
+    const pipeline = [
+      { $match: matchQuery },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: {
+          path: "$user",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $sort: {
+          [sortBy]: sortOrder === "asc" ? 1 : -1,
+        },
+      },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          price: 1,
+          image: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          user: {
+            _id: 1,
+            email: 1,
+            mobile: 1,
+            address: 1,
+            role: 1,
+            image: 1,
+            doctorId: 1,
+            patientId: 1,
+            clinic: 1,
+          },
+        },
+      },
+    ];
+    const totalDocs = await Test.countDocuments(matchQuery);
+    const tests = await Test.aggregate(pipeline);
+    if (totalDocs === 0 || !tests) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No any Lab test found" });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Tests fetched successfully",
+      total: totalDocs,
+      totalPages: Math.ceil(totalDocs / limit),
+      page,
+      limit,
+      data: tests,
+    });
+  } catch (error) {
+    console.error("Get All Tests Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 
@@ -199,40 +280,32 @@ exports.uploadReport = async (req, res) => {
   const userId = req.payload?._id;
   const labTestId = req.params?.id;
   const { reportName, reportDescription } = req.body;
-  const image = req.files?.image; // Assuming the image is uploaded via form-data
-
+  const image = req.files?.image;
   if (!labTestId || !image) {
     return res
       .status(400)
       .json({ success: false, msg: "Lab Test ID and image/pdf are required" });
   }
-
   try {
     const checkLabUser = await User.findById(userId);
     if (!checkLabUser) {
       return res.status(400).json({ success: false, msg: "User not found" });
     }
-    // Find the lab test
     const labTest = await LabTest.findById(labTestId);
     if (!labTest) {
       return res
         .status(404)
         .json({ success: false, msg: "Lab Test not found" });
     }
-
     if (!labTest.paid) {
       return res.status(403).json({ success: false, msg: "Lab Test not paid" });
     }
-
-    // Upload image to Cloudinary
     const uploadedImage = await uploadToCloudinary(image.tempFilePath);
     if (!uploadedImage) {
       return res
         .status(500)
         .json({ success: false, msg: "Failed to upload image" });
     }
-
-    // Create a new report
     const newReport = new Report({
       patientId: labTest.patientId,
       doctorId: labTest.doctorId,
@@ -242,13 +315,9 @@ exports.uploadReport = async (req, res) => {
       appointmentId: labTestId.appointmentId,
       labUser: userId,
     });
-
     if (reportName) newReport.reportName = reportName;
     if (reportDescription) newReport.reportDescription = reportDescription;
-
     await newReport.save();
-
-    // Update the lab test with the new report
     labTest.reports.push(newReport._id);
     await labTest.save();
 

@@ -3,6 +3,7 @@ const labRouter = express.Router();
 
 const {
   getAllTests,
+  getTestById,
   getTestByLab,
   addTest,
   updateTest,
@@ -22,7 +23,7 @@ const {
 const { verifyToken } = require("../middleware/authValidation");
 
 labRouter.get("/", getAllTests);
-labRouter.get("/single/:id", getAllTests);
+labRouter.get("/single/:id", getTestById);
 labRouter.get("/topMustLab", mostTakenTest);
 labRouter.get("/patientList", verifyToken, getPatientList);
 labRouter.get("/getByLabId/:id", verifyToken, getTestByLab);

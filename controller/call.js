@@ -135,9 +135,9 @@ exports.initiateCall = async (req, res) => {
     //   user_ref: checkCaller?._id?.toString(),
     //   roomId: roomId,
     // };
-    // const title = `Incoming ${callType} Call`;
-    // const message = `${checkCaller?.name || "Someone"} is calling you`;
-    // await sendSingleNotification(recieverId, title, message, userId, "call");
+    const title = `Incoming ${callType} Call`;
+    const message = `${checkCaller?.name || "Someone"} is calling you`;
+    await sendSingleNotification(recieverId, title, message, userId, "call");
     // const token = await creatToken({ room_id: roomId });
     // const token = await creatToken(data);
     return res.status(200).json({

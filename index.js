@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
+const ngrok = require("ngrok");
 const fileUpload = require("express-fileupload");
 require("dotenv").config();
 
@@ -76,4 +77,14 @@ app.use("/api/v1/membership-card", memberShipCardRouter);
 app.use("/api/v1/leaves", leaveRouter);
 app.use("/api/v1/time-slots", timeSlotRouter);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, async () => {
+  console.log(`Server running on http://localhost:${port}`);
+  if (process.env.ENABLE_NGROK === "true") {
+    const url = await ngrok.connect({
+      addr: port,
+      authtoken: process.env.NGROK_AUTH_TOKEN,
+      // subdomain: process.env.NGROK_SUBDOMAIN // must be set for custom subdomain
+    });
+    console.log(`Public URL: ${url}`);
+  }
+});
