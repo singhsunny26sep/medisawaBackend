@@ -318,15 +318,19 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.requistOtp = async (req, res) => {
-  const mobile = req.body?.mobile;
   try {
-    let checkUser = await User.findOne({ mobile });
-    if (!checkUser) checkUser = await User.create({ mobile });
-    let result = await urlSendTestOtp(mobile);
-    console.log("result: ", result);
-    if (result) {
-      return res.status(200).json({ success: true, result });
+    const mobile = req.body?.mobile;
+    const checkUser = await User.findOne({ mobile });
+    if (!checkUser) {
+      //checkUser = await User.create({ mobile });
+      return res.status(400).json({
+        success: false,
+        msg: "User not found with this mobile number! Please singup",
+      });
     }
+    const result = await urlSendTestOtp(mobile);
+    console.log("result: ", result);
+    if (result) return res.status(200).json({ success: true, result });
     return res.status(400).json({ success: false, msg: "Failed to send OTP" });
   } catch (error) {
     console.log("error on requistOtp: ", error);

@@ -2,20 +2,10 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    mobile: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      minlength: 5,
-    },
+    name: { type: String },
+    email: { type: String },
+    mobile: { type: String },
+    password: { type: String, minlength: 5 },
     role: {
       type: String,
       default: "patient",
@@ -33,30 +23,15 @@ const UserSchema = new mongoose.Schema(
         "labBoy",
       ],
     },
-    address: {
-      type: String,
-    },
+    address: { type: String },
     image: {
       type: String,
       default: "https://cdn-icons-png.flaticon.com/512/194/194915.png",
     },
-    doctorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Doctor",
-    },
-    patientId: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Patient",
-      },
-    ],
-    fcmToken: {
-      type: String,
-    },
-    clinic: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Clinic",
-    },
+    doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
+    patientId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Patient" }],
+    fcmToken: { type: String },
+    clinic: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic" },
   },
   { timestamps: true, versionKey: false }
 );
