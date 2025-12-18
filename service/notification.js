@@ -1,9 +1,11 @@
+const mongoose = require("mongoose");
 const admin = require("firebase-admin");
-const serviceAccount = require("../medisewa-e71de-firebase-adminsdk.json");
+// const serviceAccount = require("../medisewa-e71de-firebase-adminsdk.json");
 const Notification = require("../model/Notification");
 const User = require("../model/User");
 const { TimeFormate } = require("./bookingHelper");
-const mongoose = require("mongoose");
+
+const serviceAccount = JSON.parse(process.env.GOOGLE_FIREBASE_SERVICE_KEY);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
