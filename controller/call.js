@@ -138,17 +138,18 @@ exports.initiateCall = async (req, res) => {
     const title = `Incoming ${callType} Call`;
     const message = `${checkCaller?.name || "Someone"} is calling you`;
     const callData = {
-      callId: result?._id,
-      callType,
-      callerId: userId,
-      callerName: checkCaller.name,
-      channelName,
-      uid,
-      callerRtmToken,
-      receiverRtmToken,
+      callId: result?._id?.toString(),
+      callType: callType?.toString(),
+      callerId: userId?.toString(),
+      callerName: checkCaller.name?.toString() || "",
+      channelName: channelName?.toString(),
+      uid: uid?.toString(),
+      callerRtmToken: callerRtmToken?.toString(),
+      receiverRtmToken: receiverRtmToken?.toString(),
       // roomId,
-      receiver: { name: checkReciever?.name, role: checkReciever.role },
-      rtcToken,
+      receiverName: checkReciever?.name?.toString() || "",
+      receiverRole: checkReciever?.role?.toString(),
+      rtcToken: rtcToken?.toString(),
     };
     await sendSingleNotification(
       recieverId,
