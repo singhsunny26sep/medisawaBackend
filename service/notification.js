@@ -23,7 +23,8 @@ exports.sendSingleNotification = async (
   name,
   description,
   senderId,
-  type
+  type,
+  callData
 ) => {
   let admin1;
   if (!mongoose.Types.ObjectId.isValid(senderId)) {
@@ -35,6 +36,7 @@ exports.sendSingleNotification = async (
     notification: {
       title: name,
       body: description,
+      data: { ...callData, type: type },
     },
   };
   const data = await admin.messaging().send(message);
