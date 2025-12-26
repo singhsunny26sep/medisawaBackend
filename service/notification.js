@@ -36,8 +36,8 @@ exports.sendSingleNotification = async (
     notification: {
       title: name,
       body: description,
-      data: { ...callData, type: type },
     },
+    data: { ...callData, type: type },
   };
   const data = await admin.messaging().send(message);
   console.log(data, `notificaton sent to ${user?.name}`);
