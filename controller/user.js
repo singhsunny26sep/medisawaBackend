@@ -250,13 +250,13 @@ exports.registerUser = async (req, res) => {
       if (specialization) {
         await Specialization.updateOne(
           { _id: specialization },
-          { $inc: { doctorCount: 1 } }
+          { $inc: { doctorCount: 1 } },
         );
       }
       if (department) {
         await Department.updateOne(
           { _id: department },
-          { $inc: { doctorCount: 1 } }
+          { $inc: { doctorCount: 1 } },
         );
       }
     } else if (user?.role === "patient") {
@@ -287,9 +287,10 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    let { email, password, fcmToken } = req.body;
+    let { email, role, password, fcmToken } = req.body;
     email = email?.toLowerCase();
-    let checkUser = await User.findOne({ email: email });
+    role = role?.toLowerCase() || "patient";
+    let checkUser = await User.findOne({ email, role });
     if (!checkUser) {
       return res.status(404).json({
         error: "Invalid credentials",
@@ -320,7 +321,8 @@ exports.loginUser = async (req, res) => {
 exports.requistOtp = async (req, res) => {
   try {
     const mobile = req.body?.mobile;
-    const checkUser = await User.findOne({ mobile });
+    const role = req.body?.role?.toLowerCase() || "patient";
+    const checkUser = await User.findOne({ mobile, role });
     if (!checkUser) {
       //checkUser = await User.create({ mobile });
       return res.status(400).json({
@@ -344,9 +346,10 @@ exports.verifyOtp = async (req, res) => {
   const sessionId = req.body.sessionId;
   const otp = req.body.otp;
   const mobile = req.body?.mobile;
+  const role = req.body?.role?.toLowerCase() || "patient";
   const fcmToken = req.body?.fcmToken;
   try {
-    const checkUser = await User.findOne({ mobile });
+    const checkUser = await User.findOne({ mobile, role });
     if (!checkUser) {
       return res.status(400).json({ success: false, msg: "User not found!" });
     }
@@ -375,10 +378,11 @@ exports.forgotPassword = async (req, res) => {
   const sessionId = req.body.sessionId;
   const otp = req.body.otp;
   const mobile = req.body?.mobile;
+  const role = req.body?.role?.toLowerCase() || "patient";
   const fcmToken = req.body?.fcmToken;
   const password = req.body?.password;
   try {
-    const checkUser = await User.findOne({ mobile });
+    const checkUser = await User.findOne({ mobile, role });
     if (!checkUser) {
       return res.status(400).json({ success: false, msg: "User not found!" });
     }
@@ -475,7 +479,10 @@ exports.userUpdate = async (req, res) => {
     }
     if (name) checkUser.name = name;
     if (email) {
-      const checkUserWithEmail = await User.findOne({ email: email });
+      const checkUserWithEmail = await User.findOne({
+        email,
+        role: checkUser.role,
+      });
       if (checkUserWithEmail) {
         return res.status(400).json({
           success: false,
@@ -485,7 +492,10 @@ exports.userUpdate = async (req, res) => {
       checkUser.email = email;
     }
     if (mobile) {
-      const checkUserWithMobile = await User.findOne({ mobile: mobile });
+      const checkUserWithMobile = await User.findOne({
+        mobile,
+        role: checkUser.role,
+      });
       if (checkUserWithMobile) {
         return res.status(400).json({
           success: false,
