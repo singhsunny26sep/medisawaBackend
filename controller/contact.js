@@ -13,7 +13,14 @@ exports.getAllContact = async (req, res) => {
         .json({ success: false, msg: "Contact not found!" });
     }
     const result = await Contact.find().sort({ createdAt: -1 });
-    return res.status(200).json({ success: true, msg: "All contact", result });
+    if (result && result.length > 0) {
+      return res
+        .status(200)
+        .json({ success: true, msg: "All contact", result });
+    }
+    return res
+      .status(404)
+      .json({ success: false, msg: "no any contacts found!" });
   } catch (error) {
     console.log("error on getAllContact: ", error);
     return res
@@ -33,14 +40,12 @@ exports.contactPagination = async (req, res) => {
       .sort({ createdAt: -1 });
     const totalDocuments = await Contact.countDocuments();
     const totalPages = Math.ceil(totalDocuments / limit);
-    if (result) {
-      return res
-        .status(200)
-        .json({
-          success: true,
-          result,
-          pagination: { totalDocuments, totalPages, currentPage: page, limit },
-        });
+    if (result && result.length > 0) {
+      return res.status(200).json({
+        success: true,
+        result,
+        pagination: { totalDocuments, totalPages, currentPage: page, limit },
+      });
     }
     return res.status(404).json({ success: false, msg: "Contact not found!" });
   } catch (error) {

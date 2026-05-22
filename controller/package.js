@@ -23,7 +23,7 @@ exports.getAllPackages = async (req, res) => {
     const result = await Package.find()
       .populate("tests")
       .sort({ createdAt: -1 });
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res.status(404).json({ success: false, msg: "No packages found!" });
@@ -45,7 +45,7 @@ exports.paginationPackage = async (req, res) => {
       .limit(limit);
     const totalDocuments = await Package.countDocuments();
     const totalPages = Math.ceil(totalDocuments / limit);
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({
         success: true,
         result,
@@ -178,7 +178,7 @@ exports.updatePackage = async (req, res) => {
         (testId) =>
           !checkPackage.tests
             .map((id) => id.toString())
-            .includes(testId.toString())
+            .includes(testId.toString()),
       );
       // Push only the new test IDs
       checkPackage.tests.push(...newTests);
@@ -349,7 +349,7 @@ exports.getBookPackage = async (req, res) => {
           model: "Test",
         },
       });
-    if (result) {
+    if (result && result.length > 0 && result[0]) {
       return res.status(200).json({ success: true, result });
     }
     return res.status(404).json({ success: false, msg: "Package not found!" });
@@ -401,8 +401,12 @@ exports.getTop10PackagesInLastMonth = async (req, res) => {
         },
       },
     ]);
-
-    return res.status(200).json({ success: true, data: topPackages });
+    if (topPackages && topPackages.length > 0) {
+      return res.status(200).json({ success: true, data: topPackages });
+    }
+    return res
+      .status(404)
+      .json({ success: false, msg: "no any package found!" });
   } catch (error) {
     console.error("Error fetching top 10 packages:", error);
     return res.status(500).json({ success: false, msg: error.message });

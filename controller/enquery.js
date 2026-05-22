@@ -13,7 +13,7 @@ exports.getEnquery = async (req, res) => {
         .json({ success: false, msg: "Enquery not found!" });
     }
     const result = await Enquery.find().sort({ createdAt: -1 });
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res.status(404).json({ success: false, msg: "Enquery not found!" });
@@ -36,7 +36,7 @@ exports.getAllByPagination = async (req, res) => {
       .limit(limit);
     const totalDocuments = await Enquery.countDocuments();
     const totalPages = Math.ceil(totalDocuments / limit);
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({
         success: true,
         result,
@@ -118,6 +118,12 @@ exports.updateEnquery = async (req, res) => {
 exports.deleteEnquery = async (req, res) => {
   const id = req.params?.id;
   try {
+    const checkEnquery = await Enquery.findById(id);
+    if (!checkEnquery) {
+      return res
+        .status(404)
+        .json({ success: false, msg: "Enquery not found!" });
+    }
     const result = await Enquery.findByIdAndDelete(id);
     if (result) {
       return res

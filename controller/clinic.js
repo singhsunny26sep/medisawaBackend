@@ -9,11 +9,19 @@ exports.getAllClinics = async (req, res) => {
   const id = req.params?.id;
   try {
     if (id) {
-      const clinics = await Clinic.findById(id).sort({ createdAt: -1 });
-      return res.status(200).json({ success: true, result: clinics });
+      const clinic = await Clinic.findById(id).sort({ createdAt: -1 });
+      if (!clinic) {
+        return res
+          .status(404)
+          .json({ success: false, msg: "Clinic not found!" });
+      }
+      return res.status(200).json({ success: true, result: clinic });
     }
     const clinics = await Clinic.find().sort({ createdAt: -1 });
-    return res.status(200).json({ success: true, result: clinics });
+    if (clinics && clinics.length > 0) {
+      return res.status(200).json({ success: true, result: clinics });
+    }
+    return res.status(404).json({ success: false, msg: "Clinic not found!" });
   } catch (error) {
     console.error("Error in getAllClinics:", error);
     return res.status(500).json({ success: false, msg: error.message });
@@ -30,13 +38,16 @@ exports.getClinicsPaginated = async (req, res) => {
       .limit(limit)
       .sort({ createdAt: -1 });
     const total = await Clinic.countDocuments();
-    return res.status(200).json({
-      success: true,
-      total,
-      page,
-      pages: Math.ceil(total / limit),
-      result: clinics,
-    });
+    if (clinics && clinics.length > 0) {
+      return res.status(200).json({
+        success: true,
+        total,
+        page,
+        pages: Math.ceil(total / limit),
+        result: clinics,
+      });
+    }
+    return res.status(404).json({ success: false, msg: "Clinic not found!" });
   } catch (error) {
     console.error("Error in getClinicsPaginated:", error);
     return res.status(500).json({ success: false, msg: error.message });
@@ -59,7 +70,10 @@ exports.getNearbyClinics = async (req, res) => {
         },
       },
     });
-    return res.status(200).json({ success: true, result: clinics });
+    if (clinics && clinics.length > 0) {
+      return res.status(200).json({ success: true, result: clinics });
+    }
+    return res.status(404).json({ success: false, msg: "Clinic not found!" });
   } catch (error) {
     console.error("Error in getNearbyClinics:", error);
     return res.status(500).json({ success: false, msg: error.message });
@@ -184,7 +198,7 @@ exports.updateClinic = async (req, res) => {
     const updatedClinic = await Clinic.findByIdAndUpdate(
       clinicId,
       { $set: updatedFields },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedClinic) {

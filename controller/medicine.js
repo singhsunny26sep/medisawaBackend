@@ -30,7 +30,7 @@ exports.getAllMedicine = async (req, res) => {
       .populate("subCategory", "-__v")
       .populate("brand", "-__v")
       .populate("size", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ msg: "Ok", success: true, result });
     }
     return res.status(404).json({ msg: "No medicine found!", success: false });
@@ -114,7 +114,7 @@ exports.serachByTitle = async (req, res) => {
       .populate("subCategory", "-__v")
       .populate("brand", "-__v")
       .populate("size", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ msg: "ok", success: true, result });
     }
     return res.status(404).json({ msg: "No medicine found!", success: false });
@@ -158,7 +158,7 @@ exports.getMedicinesByCategory = async (req, res) => {
       .populate("subCategory", "-__v")
       .populate("brand", "-__v")
       .populate("size", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ msg: "Ok", success: true, result });
     }
     return res.status(404).json({ msg: "No medicine found!", success: false });
@@ -179,7 +179,7 @@ exports.getSubCategoryMedicines = async (req, res) => {
       .populate("subCategory", "-__v")
       .populate("brand", "-__v")
       .populate("size", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ msg: "Ok", success: true, result });
     }
     return res.status(404).json({ msg: "No medicine found!", success: false });
@@ -201,7 +201,7 @@ exports.getByBrandMedicines = async (req, res) => {
       .populate("subCategory", "-__v")
       .populate("brand", "-__v")
       .populate("size", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ msg: "Ok", success: true, result });
     }
     return res.status(404).json({ msg: "No medicine found!", success: false });

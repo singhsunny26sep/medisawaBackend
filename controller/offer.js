@@ -15,7 +15,7 @@ exports.getAllOffer = async (req, res) => {
       return res.status(404).json({ success: false, msg: "Offer not found!" });
     }
     const result = await Offer.find().sort({ createdAt: -1 });
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res.status(404).json({ success: false, msg: "Offers not found!" });
@@ -38,7 +38,7 @@ exports.getAllWithPagination = async (req, res) => {
       .limit(limit);
     const totalDocuments = await Offer.countDocuments();
     const totalPages = Math.ceil(totalDocuments / limit);
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({
         success: true,
         result,
@@ -94,7 +94,8 @@ exports.updateOffer = async (req, res) => {
   const description = req.body?.description;
   const discount = req.body?.discount;
   const discountType = req.body?.discountType;
-  const image = req.files.image;
+  const isActive = req.body?.isActive;
+  const image = req.files?.image;
   try {
     const checkOffer = await Offer.findById(id);
     if (!checkOffer) {
@@ -107,7 +108,7 @@ exports.updateOffer = async (req, res) => {
     if (isActive) checkOffer.isActive = isActive;
     if (image) {
       if (checkOffer.image) {
-        await deleteFromCloudinary(checkBanner?.image);
+        await deleteFromCloudinary(checkOffer?.image);
       }
       let imageUrl = await uploadToCloudinary(image.tempFilePath);
       checkOffer.image = imageUrl;

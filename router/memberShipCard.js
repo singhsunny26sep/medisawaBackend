@@ -10,7 +10,8 @@ const {
 } = require("../controller/memberShipCard");
 
 router.post("/add", verifyToken, addMembershipCard);
-router.get("/get", getMembershipCards);
+router.get("/getAll", getMembershipCards);
+router.get("/getOne/:id", getMembershipCards);
 router.put("/update/:id", verifyToken, updateMembershipCard);
 router.delete("/delete/:id", verifyToken, deleteMembershipCard);
 

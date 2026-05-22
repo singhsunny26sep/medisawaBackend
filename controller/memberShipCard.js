@@ -1,5 +1,6 @@
 const {
   createMembershipCard,
+  getSingleMembershipCard,
   getAllMembershipCards,
   updateMembershipCard,
   deleteMembershipCard,
@@ -16,14 +17,30 @@ exports.addMembershipCard = async (req, res) => {
 };
 
 exports.getMembershipCards = async (req, res) => {
+  const cardId = req.params?.id;
   try {
+    if (cardId) {
+      const card = await getSingleMembershipCard(cardId);
+      if (card) {
+        return sendSuccess(
+          res,
+          200,
+          "Membership Card fetched successfully",
+          card,
+        );
+      }
+      return res.status(404).json({ success: false, msg: "Card not found!" });
+    }
     const cards = await getAllMembershipCards();
-    return sendSuccess(
-      res,
-      200,
-      "Membership Cards fetched successfully",
-      cards
-    );
+    if (cards && cards.length > 0) {
+      return sendSuccess(
+        res,
+        200,
+        "Membership Cards fetched successfully",
+        cards,
+      );
+    }
+    return res.status(404).json({ success: false, msg: "No any cards found!" });
   } catch (error) {
     return sendError(res, 500, error.message);
   }

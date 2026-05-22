@@ -83,13 +83,12 @@ const MembershipCard = require("../model/MemberShipCard");
 
 exports.placeOrder = async (req, res) => {
   const userId = req.payload?._id;
-  const { type, cardId, cardPlanType } = req.body;
+  let { type, amount, cardId, cardPlanType } = req.body;
   try {
     const checkUser = await User.findById(userId);
     if (!checkUser) {
       return res.status(404).json({ msg: "User not found!", success: false });
     }
-    let amount = req.body?.amount;
     if (type === "card") {
       const card = await MembershipCard.findById(cardId);
       if (!card) {
@@ -124,15 +123,15 @@ exports.placeOrder = async (req, res) => {
         purchaseDate = new Date();
         if (cardPlanType === "quarterly") {
           endDate = new Date(
-            purchaseDate.setMonth(purchaseDate.getMonth() + 3)
+            purchaseDate.setMonth(purchaseDate.getMonth() + 3),
           );
         } else if (cardPlanType === "half-year") {
           endDate = new Date(
-            purchaseDate.setMonth(purchaseDate.getMonth() + 6)
+            purchaseDate.setMonth(purchaseDate.getMonth() + 6),
           );
         } else if (cardPlanType === "annual") {
           endDate = new Date(
-            purchaseDate.setFullYear(purchaseDate.getFullYear() + 1)
+            purchaseDate.setFullYear(purchaseDate.getFullYear() + 1),
           );
         }
       }
@@ -277,7 +276,7 @@ exports.verifyPayment = async (req, res) => {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
-      razorPyaSecret
+      razorPyaSecret,
     );
     if (!isValid) {
       return res
@@ -316,7 +315,7 @@ exports.verifyPayment = async (req, res) => {
       for (const item of checkPackage?.tests || []) {
         await LabTest.findOneAndUpdate(
           { test: item, patientId: checkUser?.patientId[0] },
-          { paid: true }
+          { paid: true },
         );
       }
     }

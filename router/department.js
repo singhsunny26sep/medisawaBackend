@@ -10,11 +10,11 @@ const {
   getAllPagination,
 } = require("../controller/department");
 
-departRouter.get("/", /* verifyToken, */ getDepartments);
-departRouter.get("/:id", verifyToken, getDepartments);
-departRouter.get("/pagination/limit", verifyToken, getAllPagination);
-departRouter.post("/", verifyToken, addDepartment);
-departRouter.put("/:id", verifyToken, updateDepartment);
-departRouter.delete("/:id", verifyToken, deleteDepartment);
+departRouter.get("/getAll", getDepartments);
+departRouter.get("/get/:id", getDepartments);
+departRouter.get("/pagination", getAllPagination);
+departRouter.post("/add", verifyToken, addDepartment);
+departRouter.put("/update/:id", verifyToken, updateDepartment);
+departRouter.delete("/delete/:id", verifyToken, deleteDepartment);
 
 module.exports = departRouter;

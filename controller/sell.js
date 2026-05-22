@@ -99,13 +99,13 @@ exports.sellMultiple = async (req, res) => {
       if (!checkSize) throw new Error("Size not found");
 
       const checkMedicine = await Medicine.findById(checkSize.medicine).session(
-        session
+        session,
       );
       if (!checkMedicine) throw new Error("Medicine not found");
 
-      if (checkSize.quntity < quantity) {
+      if (checkSize.quntity < Number(quantity)) {
         throw new Error(
-          `Not enough stock for ${checkMedicine.title} ${checkSize.size}. Available: ${checkSize.quntity}`
+          `Not enough stock for ${checkMedicine.title} ${checkSize.size}. Available: ${checkSize.quntity}`,
         );
       }
 
@@ -155,7 +155,7 @@ exports.sellMultiple = async (req, res) => {
             amount,
           },
         ],
-        { session }
+        { session },
       );
       sells.push(sell[0]);
     }
@@ -195,7 +195,10 @@ exports.salesAnalytics = async (req, res) => {
       },
       { $sort: { totalQuantitySold: -1 } },
     ]);
-    return res.status(200).json({ success: true, result: analytics });
+    if (analytics && analytics.length > 0) {
+      return res.status(200).json({ success: true, result: analytics });
+    }
+    return res.status(404).json({ success: false, msg: "No sells found!" });
   } catch (error) {
     console.error("salesAnalytics error:", error);
     return res.status(500).json({ success: false, msg: error.message });
@@ -208,7 +211,7 @@ exports.getSingleUsersSellesHistory = async (req, res) => {
     const result = await Sell.find({ userId })
       .populate("sizeId", "-__v")
       .populate("medicineId", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res
@@ -226,12 +229,10 @@ exports.getSingleUsersSellesHistoryAdmin = async (req, res) => {
     const result = await Sell.find({ userId })
       .populate("sizeId", "-__v")
       .populate("medicineId", "-__v");
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
-    return res
-      .status(400)
-      .json({ msg: "Something went wrong!", success: false });
+    return res.status(404).json({ msg: "No any sells found!", success: false });
   } catch (error) {
     console.error("Error in getSingleUsersSellesHistory:", error);
     return res.status(500).json({ success: false, msg: error.message });
@@ -289,7 +290,7 @@ exports.topSellingMedicines = async (req, res) => {
       },
     ]);
 
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res

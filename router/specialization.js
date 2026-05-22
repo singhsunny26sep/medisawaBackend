@@ -10,15 +10,11 @@ const {
 } = require("../controller/specialization");
 const { verifyToken } = require("../middleware/authValidation");
 
-specialRouter.get("/", /* verifyToken, */ getSpecialization);
-specialRouter.get("/:id", verifyToken, getSpecialization);
-specialRouter.get(
-  "/pagination/limit",
-  verifyToken,
-  getAllSpecializationPagination
-);
-specialRouter.post("/", verifyToken, addSpecialization);
-specialRouter.put("/:id", verifyToken, updateSpecialization);
-specialRouter.delete("/:id", verifyToken, deleteSpecialization);
+specialRouter.get("/getAll", getSpecialization);
+specialRouter.get("/get/:id", getSpecialization);
+specialRouter.get("/pagination", getAllSpecializationPagination);
+specialRouter.post("/add", verifyToken, addSpecialization);
+specialRouter.put("/update/:id", verifyToken, updateSpecialization);
+specialRouter.delete("/delete/:id", verifyToken, deleteSpecialization);
 
 module.exports = specialRouter;

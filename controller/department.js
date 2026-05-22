@@ -5,8 +5,6 @@ const {
 } = require("../service/uploadImage");
 
 exports.getDepartments = async (req, res) => {
-  // console.log("==================== getDepartments =================");
-  // console.log("req.params: ", req.params);
   const id = req.params?.id;
   try {
     if (id) {
@@ -19,7 +17,7 @@ exports.getDepartments = async (req, res) => {
         .json({ success: false, msg: "Department not found!" });
     }
     const result = await Department.find().sort({ createdAt: -1 });
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res
@@ -47,7 +45,7 @@ exports.getAllPagination = async (req, res) => {
     const totalDocuments = await Department.countDocuments();
     // Calculate total pages
     const totalPages = Math.ceil(totalDocuments / limit);
-    if (result.length > 0) {
+    if (result && result.length > 0) {
       return res.status(200).json({
         success: true,
         result,

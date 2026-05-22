@@ -17,7 +17,7 @@ exports.getSpecialization = async (req, res) => {
         .json({ success: false, msg: "Specialization not found!" });
     }
     const result = await Specialization.find().sort({ createdAt: -1 });
-    if (result) {
+    if (result && result.length > 0) {
       return res.status(200).json({ success: true, result });
     }
     return res

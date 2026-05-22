@@ -18,7 +18,7 @@ sellRouter.get("/sellesHistory", verifyToken, getSingleUsersSellesHistory);
 sellRouter.get(
   "/sellesHistory/:id",
   verifyToken,
-  getSingleUsersSellesHistoryAdmin
+  getSingleUsersSellesHistoryAdmin,
 );
 sellRouter.get("/topSellMedicines", topSellingMedicines);
 
