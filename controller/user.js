@@ -208,7 +208,10 @@ exports.registerUser = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "Admin role is not allowed" });
     }
-    const checkUser = await User.findOne({ $or: [{ email }, { mobile }] });
+    const checkUser = await User.findOne({
+      $or: [{ email }, { mobile }],
+      role,
+    });
     if (checkUser) {
       return res
         .status(400)
