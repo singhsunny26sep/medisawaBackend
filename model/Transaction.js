@@ -10,7 +10,7 @@ const TransactionSchema = new mongoose.Schema(
     amount: { type: Number, required: true },
     type: {
       type: String,
-      enum: ["test", "appoinment", "medicine", "package", "card"],
+      enum: ["test", "appoinment", "medicine", "package", "card", "wallet"],
       default: "appoinment",
     },
     bookingId: { type: mongoose.Schema.Types.ObjectId, ref: "Booking" },
@@ -28,7 +28,7 @@ const TransactionSchema = new mongoose.Schema(
     payment: { type: String },
     orderId: { type: String },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: true, versionKey: false },
 );
 
 module.exports = mongoose.model("Transaction", TransactionSchema);

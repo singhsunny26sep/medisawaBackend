@@ -80,10 +80,16 @@ const instance = new Razorpay({
 
 const { getCardPlanPrice } = require("../utils/getCardPricing");
 const MembershipCard = require("../model/MemberShipCard");
+const Wallet = require("../model/Wallet");
+const WalletTransaction = require("../model/WalletTransaction");
 
 exports.placeOrder = async (req, res) => {
   const userId = req.payload?._id;
-  let { type, amount, cardId, cardPlanType } = req.body;
+  let { type, amount, cardId, cardPlanType, useWallet } = req.body;
+  const bookingId = req.body?.bookingId;
+  const medicineId = req.body?.medicineId;
+  const labTestId = req.body?.labTestId;
+  const packageId = req.body?.packageId;
   try {
     const checkUser = await User.findById(userId);
     if (!checkUser) {
@@ -102,6 +108,145 @@ exports.placeOrder = async (req, res) => {
       }
       amount = planPrice * 100;
     }
+    // If user wants to use wallet for payment
+    if (useWallet) {
+      // amount is expected in paise here
+      const amountRupees = Number(amount) / 100;
+      let wallet = await Wallet.findOne({ userId });
+      if (!wallet) wallet = await Wallet.create({ userId, balance: 0 });
+      const available = Number(wallet.balance || 0);
+      if (available >= amountRupees) {
+        // full payment via wallet
+        wallet.balance = Number((available - amountRupees).toFixed(2));
+        await wallet.save();
+        await WalletTransaction.create({
+          userId,
+          amount: amountRupees,
+          type: "debit",
+          method: "wallet",
+          purpose: type || "payment",
+          status: "success",
+          referenceId: bookingId || medicineId || labTestId || packageId,
+        });
+        let purchaseDate, endDate;
+        if (type === "card") {
+          purchaseDate = new Date();
+          if (cardPlanType === "quarterly") {
+            endDate = new Date(
+              purchaseDate.setMonth(purchaseDate.getMonth() + 3),
+            );
+          } else if (cardPlanType === "half-year") {
+            endDate = new Date(
+              purchaseDate.setMonth(purchaseDate.getMonth() + 6),
+            );
+          } else if (cardPlanType === "annual") {
+            endDate = new Date(
+              purchaseDate.setFullYear(purchaseDate.getFullYear() + 1),
+            );
+          }
+        }
+        const result = await Transaction.create({
+          userId,
+          amount: Math.round(amountRupees * 100),
+          type: type || "appoinment",
+          paymentStatus: "paid",
+          payment: amountRupees,
+          ...(type === "card" && {
+            cardId,
+            cardPlanType,
+            purchaseDate,
+            endDate,
+          }),
+          ...(bookingId && { bookingId }),
+          ...(medicineId && { medicineId }),
+          ...(labTestId && { labTestId }),
+          ...(packageId && { packageId }),
+        });
+        return res
+          .status(200)
+          .json({
+            msg: "Payment completed using wallet.",
+            success: true,
+            transaction: result,
+            wallet,
+          });
+      }
+      // partial payment
+      const deducted = available;
+      if (deducted > 0) {
+        wallet.balance = 0;
+        await wallet.save();
+        await WalletTransaction.create({
+          userId,
+          amount: deducted,
+          type: "debit",
+          method: "wallet",
+          purpose: type || "payment",
+          status: "success",
+          referenceId: bookingId || medicineId || labTestId || packageId,
+        });
+      }
+      const remaining = Number((amountRupees - deducted).toFixed(2));
+      const options = {
+        amount: Math.round(remaining * 100),
+        currency: "INR",
+        receipt: `receipt#${Date.now()}`,
+        partial_payment: false,
+        notes: { username: checkUser?.name, email: checkUser?.email },
+      };
+      instance.orders.create(options, async (err, order) => {
+        if (err)
+          return res
+            .status(500)
+            .json({ msg: "Failed to generate payment order!", success: false });
+        let purchaseDate, endDate;
+        if (type === "card") {
+          purchaseDate = new Date();
+          if (cardPlanType === "quarterly") {
+            endDate = new Date(
+              purchaseDate.setMonth(purchaseDate.getMonth() + 3),
+            );
+          } else if (cardPlanType === "half-year") {
+            endDate = new Date(
+              purchaseDate.setMonth(purchaseDate.getMonth() + 6),
+            );
+          } else if (cardPlanType === "annual") {
+            endDate = new Date(
+              purchaseDate.setFullYear(purchaseDate.getFullYear() + 1),
+            );
+          }
+        }
+        const result = await Transaction.create({
+          userId,
+          amount: options.amount,
+          type: type || "appoinment",
+          orderId: order.id,
+          payment: options.amount / 100,
+          paymentStatus: "pending",
+          ...(type === "card" && {
+            cardId,
+            cardPlanType,
+            purchaseDate,
+            endDate,
+          }),
+          ...(bookingId && { bookingId }),
+          ...(medicineId && { medicineId }),
+          ...(labTestId && { labTestId }),
+          ...(packageId && { packageId }),
+        });
+        return res
+          .status(200)
+          .json({
+            msg: "Partial wallet used; complete remaining via gateway.",
+            success: true,
+            order,
+            transaction: result,
+            deducted,
+          });
+      });
+      return;
+    }
+    // default: create full razorpay order (no wallet)
     const options = {
       amount,
       currency: "INR",
@@ -142,14 +287,20 @@ exports.placeOrder = async (req, res) => {
         orderId: order.id,
         payment: order.amount / 100,
         ...(type === "card" && { cardId, cardPlanType, purchaseDate, endDate }),
+        ...(bookingId && { bookingId }),
+        ...(medicineId && { medicineId }),
+        ...(labTestId && { labTestId }),
+        ...(packageId && { packageId }),
       });
       if (result) {
-        return res.status(200).json({
-          msg: "Order created successfully.",
-          success: true,
-          result,
-          order,
-        });
+        return res
+          .status(200)
+          .json({
+            msg: "Order created successfully.",
+            success: true,
+            result,
+            order,
+          });
       }
       return res
         .status(400)
