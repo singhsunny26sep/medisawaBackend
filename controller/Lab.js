@@ -256,7 +256,7 @@ exports.getTestLabPatient = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate(
         "patientId",
-        "-allergies -department -__v -createdAt -updatedAt"
+        "-allergies -department -__v -createdAt -updatedAt",
       )
       .populate("doctorId")
       .populate("appointmentId", "-__v")
@@ -541,7 +541,7 @@ exports.getByBookingId = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate(
         "patientId",
-        "-allergies -department -__v -createdAt -updatedAt"
+        "-allergies -department -__v -createdAt -updatedAt",
       )
       .populate("doctorId")
       .populate("appointmentId", "-__v")
@@ -570,7 +570,7 @@ exports.getByPatientId = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate(
         "patientId",
-        "-allergies -department -__v -createdAt -updatedAt"
+        "-allergies -department -__v -createdAt -updatedAt",
       )
       .populate("doctorId")
       .populate("appointmentId", "-__v")
@@ -599,7 +599,7 @@ exports.getByDoctorId = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate(
         "patientId",
-        "-allergies -department -__v -createdAt -updatedAt"
+        "-allergies -department -__v -createdAt -updatedAt",
       )
       .populate("doctorId")
       .populate("appointmentId", "-__v")
@@ -633,7 +633,7 @@ exports.getByLabId = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate(
         "patientId",
-        "-allergies -department -__v -createdAt -updatedAt"
+        "-allergies -department -__v -createdAt -updatedAt",
       )
       .populate("doctorId")
       .populate("appointmentId", "-__v")
@@ -659,7 +659,6 @@ exports.getByLabId = async (req, res) => {
 exports.bookTest = async (req, res) => {
   const id = req.params?.id; ///test id
   const userId = req.payload?._id;
-
   const patientId = req.body?.patientId;
   const paidAmount = req.body?.paidAmount;
   try {
@@ -681,7 +680,7 @@ exports.bookTest = async (req, res) => {
       test: id,
       labId: checkLab?.userId,
       price: checkLab.price,
-      appointmentId,
+      //  appointmentId,
       /*  paid: true, */ totalPaid: paidAmount,
       paidAmounts: [{ amount: paidAmount }],
     });

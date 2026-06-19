@@ -28,7 +28,7 @@ exports.getAllBookings = async (req, res) => {
           appointmentId: id,
         }).sort({ createdAt: -1 });
         const labTest = await LabTest.find({ appointmentId: id }).populate(
-          "reports"
+          "reports",
         );
         const report = await Report.find({ appointmentId: id });
         return res
@@ -159,7 +159,7 @@ exports.getBookingDoctor = async (req, res) => {
         result: [...todayBookings, ...remainingBookings], // Combine results
         currentPage: page,
         totalPages: Math.ceil(
-          (todayBookings.length + remainingBookings.length) / limit
+          (todayBookings.length + remainingBookings.length) / limit,
         ),
         totalRecords: todayBookings.length + remainingBookings.length,
       });
@@ -285,7 +285,7 @@ exports.getBookingData = async (req, res) => {
     });
 
     const bookedTimes = bookedAppointments.map(
-      (booking) => booking.appointmentTime
+      (booking) => booking.appointmentTime,
     );
 
     const slotData = slots.map((slot) => ({
@@ -383,7 +383,7 @@ exports.addBooking = async (req, res) => {
       doctorUserId,
       patientUserId,
       appointmentDate,
-      appointmentTime
+      appointmentTime,
     );
     return res.status(201).json({
       success: true,
@@ -434,11 +434,11 @@ exports.confirmBooking = async (req, res) => {
 };
 
 exports.bookingStatusChange = async (req, res) => {
-  const { bookingId } = req.params;
+  const { id } = req.params;
   const { status } = req.body;
-
+  console.log(id, status);
   try {
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(id);
     if (!booking) {
       return res
         .status(404)
@@ -450,7 +450,7 @@ exports.bookingStatusChange = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, msg: "Booking confirmed successfully!", booking });
+      .json({ success: true, msg: "Booking updated successfully!", booking });
   } catch (error) {
     console.log("Error on bookingStatusChange: ", error);
     return res.status(500).json({
@@ -573,7 +573,7 @@ exports.addBookingByReceptionist = async (req, res) => {
       bookingStatus: { $ne: "cancelled" },
     });
     const bookedTimes = bookedAppointments.map(
-      (booking) => booking.appointmentTime
+      (booking) => booking.appointmentTime,
     );
     // 8️⃣ Find the next available slot
     const availableSlot = slots.find((slot) => !bookedTimes.includes(slot));
@@ -639,6 +639,44 @@ exports.getPrescriptions = async (req, res) => {
     return res
       .status(404)
       .json({ success: false, msg: "Prescription not found" });
+  } catch (error) {
+    console.error("Error in getPrescriptions:", error);
+    return res.status(500).json({
+      success: false,
+      msg: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+exports.getAllPrescriptions = async (req, res) => {
+  try {
+    let { page, limit, patientId, doctorId, appointmentId } = req.query;
+    console.log(req.query);
+    const match = {};
+    page = page || 1;
+    limit = limit || 10;
+    const skip = (page - 1) * limit;
+    if (patientId) match.patientId = patientId;
+    if (doctorId) match.doctorId = doctorId;
+    if (appointmentId) match.appointmentId = appointmentId;
+    console.log(match, "match");
+    const result = await Prescription.find(match)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    if (result && result?.length > 0) {
+      const totalDocuments = await Prescription.countDocuments();
+      const totalPages = Math.ceil(totalDocuments / limit);
+      return res.status(200).json({
+        success: true,
+        pagination: { totalDocuments, totalPages, currentPage: page, limit },
+        result,
+      });
+    }
+    return res
+      .status(404)
+      .json({ success: false, msg: "No any prescription not found" });
   } catch (error) {
     console.error("Error in getPrescriptions:", error);
     return res.status(500).json({

@@ -14,6 +14,7 @@ const {
   getBookingDoctor,
   addBookingByReceptionist,
   getPrescriptions,
+  getAllPrescriptions,
 } = require("../controller/booking");
 
 bookingRouter.get("/booking", verifyToken, getAllBookings);
@@ -23,22 +24,23 @@ bookingRouter.get("/doctor/allBooking", verifyToken, getBookingDoctor);
 bookingRouter.get(
   "/patientBooking/patient/:id",
   verifyToken,
-  getBookingByPatientId
+  getBookingByPatientId,
 );
 bookingRouter.get("/doctorBookings/:doctorId", verifyToken, getBookingData);
 bookingRouter.get(
   "/booking/history/:patientId/:doctorId",
   verifyToken,
-  getBookingWithPatientAndDoctorId
+  getBookingWithPatientAndDoctorId,
 );
 bookingRouter.post("/book/appointment/:patientId", verifyToken, addBooking);
 bookingRouter.post(
   "/book/receptionist/appointment",
   verifyToken,
-  addBookingByReceptionist
+  addBookingByReceptionist,
 );
 bookingRouter.put("/update/booking/:id", verifyToken, bookingStatusChange);
 bookingRouter.put("/cancel/booking/:id", verifyToken, cancelBooking);
 bookingRouter.get("/getPrescriptions/:id", verifyToken, getPrescriptions); //appointment id
+bookingRouter.get("/getAllPrescriptions", verifyToken, getAllPrescriptions);
 
 module.exports = bookingRouter;

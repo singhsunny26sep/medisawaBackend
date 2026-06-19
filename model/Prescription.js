@@ -12,7 +12,7 @@ const PrescriptionSchema = new mongoose.Schema(
     },
     appointmentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Appointment",
+      ref: "Booking",
     },
     medicines: [
       {
@@ -75,7 +75,7 @@ const PrescriptionSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: true, versionKey: false },
 );
 
 module.exports = mongoose.model("Prescription", PrescriptionSchema);

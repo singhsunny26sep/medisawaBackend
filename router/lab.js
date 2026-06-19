@@ -35,10 +35,10 @@ labRouter.get("/getByAppoinmentId/:id", verifyToken, getByBookingId);
 labRouter.get("/getByPatientId/:id", verifyToken, getByPatientId);
 labRouter.get("/getByDoctorId/:id", verifyToken, getByDoctorId);
 labRouter.get("/getTestList/:id", verifyToken, getByLabId);
+
+labRouter.post("/book/:id", verifyToken, bookTest);
 labRouter.post("/uploadReport/:id", verifyToken, uploadReport); //labtest id
 labRouter.put("/updateReport/:id", verifyToken, updateReport); //report id
 labRouter.delete("/deleteReport/:id", verifyToken, deleteReport); //report id
-// ============================== book test by user in web app ================================
-labRouter.post("/book/:id", verifyToken, bookTest);
 
 module.exports = labRouter;
